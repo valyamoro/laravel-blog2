@@ -1,6 +1,6 @@
 <?php
 
-namespace Dashboard;
+namespace Admin\Dashboard;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
