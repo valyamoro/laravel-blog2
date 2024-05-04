@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,14 +18,9 @@ class LoginController extends BaseController
         ]);
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(AdminLoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|max:1000',
-        ]);
-
-        if (!auth('admin')->attempt($credentials)) {
+        if (!auth('admin')->attempt($request->only('email', 'password'))) {
             return back()->withErrors(['email' => 'Почта или пароль неверны.']);
         }
 
