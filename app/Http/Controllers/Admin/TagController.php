@@ -73,9 +73,15 @@ class TagController extends Controller
         return redirect()->route('tags.index')->with('success', 'Успешно сохранено.');
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): RedirectResponse
     {
-        //
+        $result = $this->tagService->destroy($tag);
+
+        if (!$result) {
+            return back()->withErrors(['error' => 'Ошибка удаления']);
+        }
+
+        return redirect()->route('tags.index')->with('success', 'Успешно удалено.');
     }
 
 }

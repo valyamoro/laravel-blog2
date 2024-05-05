@@ -47,4 +47,9 @@ final class TagRepository
         return $result ? $tag : null;
     }
 
+    public function destroy(Tag $tag): ?bool
+    {
+        return $tag->delete();
+    }
+
 }

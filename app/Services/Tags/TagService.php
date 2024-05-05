@@ -30,4 +30,9 @@ final class TagService
         return $this->tagRepository->update($request, $tag);
     }
 
+    public function destroy(Tag $tag): ?bool
+    {
+        return $this->tagRepository->destroy($tag);
+    }
+
 }
