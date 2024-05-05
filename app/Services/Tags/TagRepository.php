@@ -3,6 +3,7 @@
 namespace App\Services\Tags;
 
 use App\Http\Requests\AdminUserRequestSearch;
+use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -32,4 +33,11 @@ final class TagRepository
         return $builder;
     }
 
+    public function create(TagRequest $request): ?Tag
+    {
+        $result = Tag::create($request->only((new Tag())->getFillable()));
+
+        return $result ?? null;
+    }
+    
 }
