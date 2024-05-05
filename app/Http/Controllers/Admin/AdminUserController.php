@@ -47,9 +47,14 @@ class AdminUserController extends BaseController
         return redirect()->route('admin-users.index')->with('success', $successSave);
     }
 
-    public function show(AdminUser $adminUser)
+    public function show(AdminUser $adminUser): View
     {
-        //
+        $title = 'Профиль администратора: ' . $adminUser->username;
+
+        return view('admin.admin_users.show', [
+            'title' => $title,
+            'item' => $adminUser,
+        ]);
     }
 
     public function edit(AdminUser $adminUser)
