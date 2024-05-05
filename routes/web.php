@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('/admin')->group(function() {
@@ -15,4 +16,5 @@ Route::middleware(['admin.auth:admin', 'admin.banned:admin'])->group(function() 
 
     /** Resource */
     Route::resource('/admin-users', AdminUserController::class);
+    Route::resource('/admin/tags', TagController::class);
 });
