@@ -57,14 +57,27 @@ class AdminUserController extends BaseController
         ]);
     }
 
-    public function edit(AdminUser $adminUser)
+    public function edit(AdminUser $adminUser): View
     {
-        //
+        $title = 'Редактировать: ' . $adminUser->username;
+
+        return view('admin.admin_users.edit', [
+            'title' => $title,
+            'item' => $adminUser,
+        ]);
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser)
+    public function update(AdminUserRequest $request, AdminUser $adminUser): RedirectResponse
     {
-        //
+        $result = $this->adminUserService->update($request, $adminUser);
+
+        if (!$result) {
+            $errorSave = config('messages.error.save');
+            return back()->withErrors(['error' => $errorSave]);
+        }
+
+        $successSave = config('messages.success.save');
+        return redirect()->route('admin-users.index')->with('success', $successSave);
     }
 
     public function destroy(AdminUser $adminUser)
