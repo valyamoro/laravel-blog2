@@ -49,17 +49,28 @@ class TagController extends Controller
 
     public function show(Tag $tag)
     {
-        //
+        abort(404);
     }
 
-    public function edit(Tag $tag)
+    public function edit(Tag $tag): View
     {
-        //
+        $title = 'Редактировать: ' . $tag->name;
+
+        return view('admin.tags.edit', [
+            'title' => $title,
+            'item' => $tag,
+        ]);
     }
 
-    public function update(TagRequest $request, Tag $tag)
+    public function update(TagRequest $request, Tag $tag): RedirectResponse
     {
-        //
+        $result = $this->tagService->update($request, $tag);
+
+        if (!$result) {
+            return back()->withErrors(['error' => 'Ошибка сохранения']);
+        }
+
+        return redirect()->route('tags.index')->with('success', 'Успешно сохранено.');
     }
 
     public function destroy(Tag $tag)

@@ -39,5 +39,12 @@ final class TagRepository
 
         return $result ?? null;
     }
-    
+
+    public function update(TagRequest $request, Tag $tag): ?Tag
+    {
+        $result = $tag->update($request->only($tag->getFillable()));
+
+        return $result ? $tag : null;
+    }
+
 }
