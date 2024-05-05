@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserRequest;
 use App\Models\AdminUser;
 use App\Services\AdminUsers\AdminUserService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class AdminUserController extends BaseController
@@ -25,14 +25,26 @@ class AdminUserController extends BaseController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        //
+        $title = 'Добавить';
+
+        return view('admin.admin_users.create', [
+            'title' => $title,
+        ]);
     }
 
-    public function store(AdminUserRequest $request)
+    public function store(AdminUserRequest $request): RedirectResponse
     {
-        //
+        $result = $this->adminUserService->create($request);
+
+        if (!$result) {
+            $errorSave = config('messages.error.save');
+            return back()->withErrors(['error' => $errorSave]);
+        }
+
+        $successSave = config('messages.success.save');
+        return redirect()->route('admin-users.index')->with('success', $successSave);
     }
 
     public function show(AdminUser $adminUser)

@@ -2,6 +2,7 @@
 
 namespace App\Services\AdminUsers;
 
+use App\Http\Requests\AdminUserRequest;
 use App\Models\AdminUser;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -15,6 +16,13 @@ final class AdminUserRepository
             ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();
+    }
+
+    public function create(AdminUserRequest $request): ?AdminUser
+    {
+        $result = AdminUser::create($request->only((new AdminUser())->getFillable()));
+
+        return $result ?? null;
     }
 
 }
