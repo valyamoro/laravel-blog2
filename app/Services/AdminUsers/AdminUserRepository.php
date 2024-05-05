@@ -32,4 +32,9 @@ final class AdminUserRepository
         return $result ? $adminUser : null;
     }
 
+    public function destroy(AdminUser $adminUser): ?bool
+    {
+        return $adminUser->delete();
+    }
+
 }

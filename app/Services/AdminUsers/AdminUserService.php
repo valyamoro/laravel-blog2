@@ -30,4 +30,9 @@ final class AdminUserService
         return $this->adminUserRepository->update($request, $adminUser);
     }
 
+    public function destroy(AdminUser $adminUser): ?bool
+    {
+        return $this->adminUserRepository->destroy($adminUser);
+    }
+
 }
