@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AdminUserRequest;
+use App\Http\Requests\AdminUserRequestSearch;
 use App\Models\AdminUser;
 use App\Services\AdminUsers\AdminUserService;
 use Illuminate\Http\RedirectResponse;
@@ -12,12 +13,12 @@ class AdminUserController extends BaseController
 {
     public function __construct(private readonly AdminUserService $adminUserService) {}
 
-    public function index(): View
+    public function index(AdminUserRequestSearch $request): View
     {
         $title = 'Администраторы';
 
         $perPage = config('pagination.pagination_5');
-        $adminUsers = $this->adminUserService->getAllWithPagination($perPage);
+        $adminUsers = $this->adminUserService->getAllWithPagination($request, $perPage);
 
         return view('admin.admin_users.index', [
             'title' => $title,
