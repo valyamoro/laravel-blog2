@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\AdminUser;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         AdminUser::factory(25)->create();
+        Tag::factory(12)->create();
     }
 
 }
