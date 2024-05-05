@@ -80,9 +80,17 @@ class AdminUserController extends BaseController
         return redirect()->route('admin-users.index')->with('success', $successSave);
     }
 
-    public function destroy(AdminUser $adminUser)
+    public function destroy(AdminUser $adminUser): RedirectResponse
     {
-        //
+        $result = $this->adminUserService->destroy($adminUser);
+
+        if (!$result) {
+            $errorDestroy = config('messages.error.destroy');
+            return back()->withErrors(['error' => $errorDestroy]);
+        }
+
+        $successDestroy = config('messages.success.destroy');
+        return redirect()->route('admin-users.index')->with('success', $successDestroy);
     }
 
 }
