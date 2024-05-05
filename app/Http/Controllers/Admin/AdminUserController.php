@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserRegisteredEvent;
 use App\Http\Requests\AdminUserRequest;
 use App\Http\Requests\AdminUserRequestSearch;
 use App\Models\AdminUser;
@@ -43,6 +44,8 @@ class AdminUserController extends BaseController
             $errorSave = config('messages.error.save');
             return back()->withErrors(['error' => $errorSave]);
         }
+
+        event(new UserRegisteredEvent(new AdminUser($request->input())));
 
         $successSave = config('messages.success.save');
         return redirect()->route('admin-users.index')->with('success', $successSave);
