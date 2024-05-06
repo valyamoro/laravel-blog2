@@ -52,4 +52,9 @@ final class CategoryRepository
         return $result ? $category : null;
     }
 
+    public function destroy(Category $category): ?bool
+    {
+        return $category->delete();
+    }
+
 }

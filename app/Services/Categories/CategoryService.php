@@ -58,4 +58,9 @@ final class CategoryService
         return $this->categoryRepository->update($request, $category);
     }
 
+    public function destroy(Category $category): ?bool
+    {
+        return $this->categoryRepository->destroy($category);
+    }
+
 }
