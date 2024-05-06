@@ -58,4 +58,15 @@ final class CategoryService
         return $this->categoryRepository->update($request, $category);
     }
 
+    public function destroy(Category $category): ?bool
+    {
+        $result = $this->deleteImage($category, CategoryFile::FILE_DISK, CategoryFile::MODEL_IMAGE_NAME);
+
+        if (!$result) {
+            return null;
+        }
+
+        return $this->categoryRepository->destroy($category);
+    }
+
 }

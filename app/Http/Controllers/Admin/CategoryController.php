@@ -83,9 +83,15 @@ class CategoryController extends BaseController
         return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
-        //
+        $result = $this->categoryService->destroy($category);
+
+        if (!$result) {
+            return back()->withErrors(['error' => 'Ошибка удаления.']);
+        }
+
+        return redirect()->route('categories.index')->with('success', 'Успешно удалено.');
     }
 
 }
