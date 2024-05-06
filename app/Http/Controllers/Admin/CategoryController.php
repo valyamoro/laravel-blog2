@@ -6,6 +6,7 @@ use App\Http\Requests\AdminUserRequestSearch;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\Categories\CategoryService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class CategoryController extends BaseController
@@ -25,14 +26,27 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        //
+        $title = 'Добавить';
+
+        $categories = $this->categoryService->getForSelect();
+
+        return view('admin.categories.create', [
+            'title' => $title,
+            'categories' => $categories,
+        ]);
     }
 
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): RedirectResponse
     {
-        //
+        $result = $this->categoryService->create($request);
+
+        if (!$result) {
+            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+        }
+
+        return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
     }
 
     public function show(Category $category)

@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CategoryRepository
@@ -30,6 +31,18 @@ final class CategoryRepository
         }
 
         return $builder;
+    }
+
+    public function getForSelect(): Collection
+    {
+        return Category::orderBy('id')->get()->pluck('name', 'id');
+    }
+
+    public function create(Request $request): ?Category
+    {
+        $result = Category::create($request->input());
+
+        return $result ? $result : null;
     }
 
 }
