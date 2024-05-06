@@ -2,7 +2,9 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 trait FileUploader
 {
@@ -24,6 +26,15 @@ trait FileUploader
         }
 
         return $request;
+    }
+
+    private function deleteImage(
+        Model $model,
+        string $fileDisk,
+        string $fileImageName,
+    ): bool
+    {
+        return Storage::disk($fileDisk)->delete($model->{$fileImageName});
     }
 
 }

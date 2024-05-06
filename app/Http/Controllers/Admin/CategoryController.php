@@ -59,14 +59,28 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function edit(Category $category)
+    public function edit(Category $category): View
     {
-        //
+        $title = 'Редактировать: ' . $category->name;
+
+        $categories = $this->categoryService->getForSelect();
+
+        return view('admin.categories.edit', [
+            'title' => $title,
+            'item' => $category,
+            'categories' => $categories,
+        ]);
     }
 
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category): RedirectResponse
     {
-        //
+        $result = $this->categoryService->update($request, $category);
+
+        if (!$result) {
+            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+        }
+
+        return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
     }
 
     public function destroy(Category $category)

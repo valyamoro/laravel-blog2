@@ -45,4 +45,11 @@ final class CategoryRepository
         return $result ? $result : null;
     }
 
+    public function update(Request $request, Category $category): ?Category
+    {
+        $result = $category->update($request->input());
+
+        return $result ? $category : null;
+    }
+
 }
