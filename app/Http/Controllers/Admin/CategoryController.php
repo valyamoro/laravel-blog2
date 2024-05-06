@@ -49,9 +49,14 @@ class CategoryController extends BaseController
         return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
     }
 
-    public function show(Category $category)
+    public function show(Category $category): View
     {
-        //
+        $title = 'Категория: '  . $category->name;
+
+        return view('admin.categories.show', [
+            'title' => $title,
+            'item' => $category,
+        ]);
     }
 
     public function edit(Category $category)
