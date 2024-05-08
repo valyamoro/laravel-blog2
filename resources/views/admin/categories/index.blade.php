@@ -12,8 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('categories.index') }}">Список
-                                категорий</a>
+                        <li class="breadcrumb-item active"><a href="{{ route('categories.index') }}">Список категорий</a>
                         </li>
                     </ol>
                 </div>
@@ -27,8 +26,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title"><a href="{{ route('categories.create') }}" type="button"
-                                               class="btn btn-block btn-primary">Добавить</a></div>
+                    <div class="card-title"><a href="{{ route('categories.create') }}" type="button" class="btn btn-block btn-primary">Добавить</a></div>
                     <div class="card-tools">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -54,9 +52,7 @@
                             <form action="{{ route('categories.index') }}" method="get">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <label for="q"></label>
-                                    <input id="q" type="text" name="q" value="{{ request('q') }}"
-                                           class="form-control"
-                                           placeholder="Search">
+                                    <input id="q" type="text" name="q" value="{{ request('q') }}" class="form-control" placeholder="Search">
                                     <div class="input-group-append">
                                         <button class="btn btn-navbar" type="submit">
                                             <i class="fas fa-search"></i>
@@ -77,8 +73,9 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Айди</th>
+                            <th>Id</th>
                             <th>Дата</th>
+                            <th>Изображение</th>
                             <th>Название</th>
                             <th>Количество статей</th>
                             <th>Просмотры</th>

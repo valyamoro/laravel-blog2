@@ -12,8 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin-users.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('categories.show', $item) }}">Страница
-                                категории</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('categories.show', $item) }}">Страница категории</a></li>
                     </ol>
                 </div>
             </div>
@@ -26,7 +25,7 @@
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
                 <div class="text-center">
-                    <img class="profile-user-img" src="{{ asset('/storage/' . $item->thumbnail) }}" alt="Изображение категории" style="border: none">
+                    @include('admin.categories.components.image_profile', ['item' => $item])
                 </div>
                 <h3 class="profile-username text-center">{{ $item->name }}</h3>
             </div>
@@ -43,11 +42,7 @@
                 </p>
                 <strong><i class="fas fa-pen mr-1"></i>Статус</strong>
                 <p class="text-muted">
-                    @if($item->is_active === true)
-                        Активен
-                    @else
-                        Не активен
-                    @endif
+                    @if($item->is_active === true) Активен @else Не активен @endif
                 </p>
             </div>
         </div>
