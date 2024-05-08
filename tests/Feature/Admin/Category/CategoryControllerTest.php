@@ -59,6 +59,7 @@ class CategoryControllerTest extends TestCase
 
     public function testCategoryCreate(): void
     {
+        Category::factory()->create(['id' => 1]);
         $tagData = [
             'parent_id' => 1,
             'name' => 'test',
@@ -72,7 +73,7 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->post(route('categories.store'), $requestData);
 
-        $this->assertDatabaseCount(Category::class, 1);
+        $this->assertDatabaseCount(Category::class, 2);
         $this->assertDatabaseHas(Category::class, $tagData);
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('categories.index'));
@@ -100,6 +101,7 @@ class CategoryControllerTest extends TestCase
 
     public function testCategoryUpdate(): void
     {
+        Category::factory()->create(['id' => 1]);
         $requestData = [
             'parent_id' => 1,
             'name' => 'test',
@@ -114,12 +116,11 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->patch(route('categories.update', $category), $requestData);
 
-        $this->assertDatabaseCount(Category::class, 1);
+        $this->assertDatabaseCount(Category::class, 2);
         $this->assertDatabaseHas(Category::class, $requestData);
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('categories.index'));
     }
-
     public function testCategoryDestroy(): void
     {
         $categoryData = [

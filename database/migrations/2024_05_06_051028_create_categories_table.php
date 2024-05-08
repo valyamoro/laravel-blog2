@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->unsigned()->default(0)->comment('ID родителя');
             $table->string('slug')->comment('ЧПУ');
             $table->string('name')->unique()->comment('Название');
-            $table->text('content')->nullable()->comment('Описание');
+            $table->longText('content')->nullable()->comment('Описание');
             $table->string('thumbnail')->nullable()->comment('Изображение');
             $table->bigInteger('view')->default(true)->comment('Просмотры');
             $table->boolean('is_active')->default(true)->comment('Активность');
@@ -25,5 +25,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('categories');
     }
-    
+
 };

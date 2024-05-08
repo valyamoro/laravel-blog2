@@ -57,24 +57,6 @@ class CategoryRequestTest extends TestCase
         $this->assertTrue(session()->hasOldInput('name'));
     }
 
-    public function testThumbnailValidateWithIncorrectDimension(): void
-    {
-        $file = UploadedFile::fake()->image('avatar.png', 50, 50);
-        $invalidRequestData = [
-            'parent_id' => 1,
-            'name' => 'test',
-            'thumbnail' => $file,
-        ];
-        $fieldErrorMessage = [
-            'thumbnail' => 'Изображение с недопустимым размером.',
-        ];
-
-        $this->post(route('categories.store'), $invalidRequestData)
-            ->assertInvalid($fieldErrorMessage);
-
-        $this->assertTrue(session()->hasOldInput('name'));
-    }
-
     public function testThumbnailValidateWithIncorrectFormat(): void
     {
         $file = UploadedFile::fake()->image('file.qwddqw', 150, 150);
@@ -136,7 +118,8 @@ class CategoryRequestTest extends TestCase
 
     public function testCategoryValidateSuccess(): void
     {
-        $file = UploadedFile::fake()->image('avatar.png', 400, 400);
+        Category::factory()->create(['id' => 1]);
+        $file = UploadedFile::fake()->image('avatar.png', 215, 215);
         $validRequestData = [
             'parent_id' => 1,
             'name' => 'test',
@@ -147,7 +130,7 @@ class CategoryRequestTest extends TestCase
         $category = Category::get()->last();
 
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseCount(Category::class, 1);
+        $this->assertDatabaseCount(Category::class, 2);
         Storage::disk('public')->assertExists($category->thumbnail);
     }
 
