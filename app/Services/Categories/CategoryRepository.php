@@ -15,9 +15,20 @@ final class CategoryRepository
     {
         $builder = Category::query();
 
-        $builder = $this->search($request, $builder);
+        $paginator = $builder
+            ->orderByDesc('id')
+            ->paginate($perPage)
+            ->withQueryString();
 
-        return $builder
+        $paginatorWithSearch = $this->search($request, $builder);
+
+        if ($paginatorWithSearch->count() === 0 || ($request->has('q') && empty($request->input('q')))) {
+            $paginator->isEmptyItems = true;
+
+            return $paginator;
+        }
+
+        return $paginatorWithSearch
             ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();

@@ -44,7 +44,7 @@
                                 <span class="text-red">{{ $message }}</span>
                                 @enderror
                             @endif
-                            @if(request('q'))
+                            @if(request()->has('q'))
                                 <a href="{{ route('categories.index') }}" class="btn btn-navbar input-group-prepend">
                                     <i class="fas fa-times"></i>
                                 </a>
@@ -52,7 +52,9 @@
                             <form action="{{ route('categories.index') }}" method="get">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <label for="q"></label>
-                                    <input id="q" type="text" name="q" value="{{ request('q') }}" class="form-control" placeholder="Search">
+                                    <input id="q" type="text" name="q" value="{{ request('q') }}"
+                                           class="form-control"
+                                           placeholder="Search">
                                     <div class="input-group-append">
                                         <button class="btn btn-navbar" type="submit">
                                             <i class="fas fa-search"></i>
@@ -62,12 +64,11 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
                 <div style="margin-left: 20px; margin-top: 10px">
-                    @if ($paginator->isEmpty())
-                        <p>Записей не найдено...</p>
-                    @else
+                    @if (isset($paginator->isEmptyItems))
+                        <p>По вашему запросу, ничего не найдено.</p>
+                    @endif
                 </div>
                 <div class="card body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
@@ -95,7 +96,6 @@
                         {{ $paginator->links('vendor.pagination.bootstrap-4') }}
                     </ul>
                 </div>
-                @endif
             </div>
         </div>
     </div>

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\Categories\CategoryService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CategoryController extends BaseController
 {
     public function __construct(private readonly CategoryService $categoryService) {}
 
-    public function index(AdminUserRequestSearch $request): View
+    public function index(Request $request): View
     {
         $title = 'Категории';
 
