@@ -32,38 +32,37 @@ final class CategoryService
 
     public function create(Request $request): ?Category
     {
-        $request = $this->uploadImage($request, CategoryFile::FILE_PATH, CategoryFile::FILE_DISK, CategoryFile::MODEL_IMAGE_NAME);
-
-        $request->merge(['is_active' => (bool)$request->input('is_active')]);
+        $request->merge(['thumbnail' => $request->hasFile('thumbnail')
+            ? $this->uploadImage($request, 'uploads', 'public')
+            : null,
+        ]);
 
         return $this->categoryRepository->create($request);
     }
 
     public function update(Request $request, Category $category): ?Category
     {
-        $imageObjectFromForm = Arr::first($request->file());
-
-        if ($imageObjectFromForm && !empty($category->{CategoryFile::MODEL_IMAGE_NAME})) {
-            $result = $this->deleteImage($category, CategoryFile::FILE_DISK, CategoryFile::MODEL_IMAGE_NAME);
+        if ($request->hasFile('thumbnail') && !empty($category->thumbnail)) {
+            $result = $this->deleteImage($category, 'public', 'thumbnail');
 
             if (!$result) {
                 return null;
             }
         }
 
-        $request = $this->uploadImage($request, CategoryFile::FILE_PATH, CategoryFile::FILE_DISK, CategoryFile::MODEL_IMAGE_NAME);
-
-        $request->merge(['is_active' => (bool)$request->input('is_active')]);
+        $uploadedFilePath = $this->uploadImage($request, 'uploads', 'public') ?? $category->thumbnail;
+        $request->merge(['thumbnail' => $uploadedFilePath]);
 
         return $this->categoryRepository->update($request, $category);
     }
 
     public function destroy(Category $category): ?bool
     {
-        $result = $this->deleteImage($category, CategoryFile::FILE_DISK, CategoryFile::MODEL_IMAGE_NAME);
-
-        if (!$result) {
-            return null;
+        if (!empty($category->thumbnail)) {
+            $result = $this->deleteImage($category, 'public', 'thumbnail');
+            if (!$result) {
+                return null;
+            }
         }
 
         return $this->categoryRepository->destroy($category);

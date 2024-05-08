@@ -10,31 +10,29 @@ trait FileUploader
 {
     private function uploadImage(
         Request $request,
-        string $filePath,
-        string $fileDisk,
-        string $fileImageName,
-    ): Request
+        string $filepath,
+        string $namedisk,
+    ): ?string
     {
-        $imageNameFromForm = array_key_first($request->file());
-        if ($request->hasFile($imageNameFromForm)) {
-            $path = $request->file($imageNameFromForm)->store(
-                $filePath,
-                $fileDisk,
-            );
+        $fileName = array_key_first($request->file());
 
-            $request->merge([$fileImageName => $path]);
+        if ($request->hasFile($fileName)) {
+            return $request->file($fileName)->store(
+                $filepath,
+                $namedisk,
+            );
         }
 
-        return $request;
+        return null;
     }
 
     private function deleteImage(
         Model $model,
-        string $fileDisk,
-        string $fileImageName,
+        string $namedisk,
+        string $filename,
     ): bool
     {
-        return Storage::disk($fileDisk)->delete($model->{$fileImageName});
+        return Storage::disk($namedisk)->delete($model->{$filename});
     }
 
 }

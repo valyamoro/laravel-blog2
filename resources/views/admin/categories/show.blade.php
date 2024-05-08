@@ -26,9 +26,7 @@
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
                 <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle"
-                         src="{{ Storage::url($item->{\App\Enums\CategoryFile::MODEL_IMAGE_NAME}) }}"
-                         alt="Изображение категории">
+                    <img class="profile-user-img" src="{{ asset('/storage/' . $item->thumbnail) }}" alt="Изображение категории" style="border: none">
                 </div>
                 <h3 class="profile-username text-center">{{ $item->name }}</h3>
             </div>
