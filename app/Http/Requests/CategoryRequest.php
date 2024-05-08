@@ -13,10 +13,10 @@ class CategoryRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->category?->id;
-        $parentId = $this->parent_id;
+        $this->merge(['is_active' => (bool)$this->input('is_active')]);
 
-        $this->merge(['is_active' => (bool)$this->is_active]);
+        $id = $this->category?->id;
+        $parentId = $this->input('parent_id');
 
         return [
             'parent_id' => 'required|int' . ($parentId === '0' ? '' : '|exists:categories,id'),

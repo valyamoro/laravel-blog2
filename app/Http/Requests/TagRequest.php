@@ -13,7 +13,7 @@ class TagRequest extends FormRequest
 
     public function rules(): array
     {
-        $this->merge(['is_active' => (bool)$this->is_active]);
+        $this->merge(['is_active' => (bool)$this->input('is_active')]);
 
         $id = $this->tag?->id;
 
