@@ -31,7 +31,7 @@ class CategoryControllerTest extends TestCase
     {
         $title = 'Категории';
         $perPage = 5;
-        $request = new AdminUserRequestSearch();
+        $request = new Request();
 
         $response = $this->get(route('categories.index'));
         $categories = $this->categoryService->getAllWithPagination($request, $perPage);

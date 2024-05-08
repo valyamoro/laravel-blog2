@@ -2,7 +2,6 @@
 
 namespace App\Services\Tags;
 
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 final class TagRepository
 {
-    public function getAllWithPagination(AdminUserRequestSearch $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
         $builder = Tag::query();
 
