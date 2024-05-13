@@ -3,6 +3,7 @@
 namespace App\Services\Articles;
 
 use App\Models\Article;
+use App\Services\Categories\CategoryRepository;
 use App\Traits\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,11 +22,6 @@ final class ArticleService
     public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
         return $this->articleRepository->getAllWithPagination($request, $perPage);
-    }
-
-    public function getForSelect(): Collection
-    {
-        return $this->articleRepository->getForSelect();
     }
 
     public function create(Request $request): ?Article
