@@ -5,7 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Category
@@ -47,6 +47,16 @@ class Article extends BaseModel
                 'source' => 'title',
             ],
         ];
+    }
+
+    public function adminUser(): BelongsTo
+    {
+        return $this->belongsTo(AdminUser::class, 'user_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
 }
