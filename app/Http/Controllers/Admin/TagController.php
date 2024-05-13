@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use App\Services\Tags\TagService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TagController extends Controller
 {
     public function __construct(private readonly TagService $tagService) {}
 
-    public function index(AdminUserRequestSearch $request): View
+    public function index(Request $request): View
     {
         $title = 'Тэги';
 

@@ -13,6 +13,7 @@
         <option name="parent_id" value="0">Родительская</option>
         @if($categories->isNotEmpty())
             @foreach($categories as $idx => $name)
+                @if(isset($item) && $item->id === $idx) @continue @endif
                 <option value="{{ $idx }}" @if(isset($item) && $item->parent_id === $idx) selected @endif>{{ $name }}</option>
             @endforeach
         @endif
