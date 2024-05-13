@@ -13,17 +13,15 @@ class CategoryRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->category?->id;
-        $parentId = $this->parent_id;
-
-        $this->merge(['is_active' => (bool)$this->is_active]);
-
         return [
-            'parent_id' => 'required|int' . ($parentId === '0' ? '' : '|exists:categories,id'),
-            'name' => 'required|regex:/[A-Za-zА-ЯЁа-яё]+/|string|min:2|max:255|unique:categories,name,' . $id,
+            'parent_id' =>
+                'required|int' .
+                ($this->input('parent_id') !== '0' ? '|exists:categories,id' : '') .
+                ($this->filled('parent_id') ? '|not_in:' . $this->category?->id : ''),
+            'name' => 'required|regex:/[A-Za-zА-ЯЁа-яё]+/|string|min:2|max:255|unique:categories,name,' . $this->category?->id,
             'content' => 'nullable|max:1000000',
             'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png|dimensions:ratio=1',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable' . ($this->filled('is_active') ? '|accepted' : ''),
         ];
     }
 

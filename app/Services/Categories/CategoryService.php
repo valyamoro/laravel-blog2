@@ -36,6 +36,7 @@ final class CategoryService
             ? $this->uploadImage($request, 'uploads', 'public')
             : null,
         ]);
+        $request->merge(['is_active' => (bool)$request->input('is_active')]);
 
         return $this->categoryRepository->create($request);
     }
@@ -50,8 +51,11 @@ final class CategoryService
             }
         }
 
-        $uploadedFilePath = $this->uploadImage($request, 'uploads', 'public') ?? $category->thumbnail;
-        $request->merge(['thumbnail' => $uploadedFilePath]);
+        $request->merge(['thumbnail' => $request->hasFile('thumbnail')
+            ? $this->uploadImage($request, 'uploads', 'public')
+            : null,
+        ]);
+        $request->merge(['is_active' => (bool)$request->input('is_active')]);
 
         return $this->categoryRepository->update($request, $category);
     }
