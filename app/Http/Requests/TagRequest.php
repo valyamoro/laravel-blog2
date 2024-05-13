@@ -13,10 +13,9 @@ class TagRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->tag?->id;
-
         return [
-            'name' => 'required|min:3|max:255|regex:/[A-Za-zА-ЯЁа-яё]+/|unique:tags,name,' . $id,
+            'name' => 'required|min:3|max:255|regex:/[A-Za-zА-ЯЁа-яё]+/|unique:tags,name,' . $this->tag?->id,
+            'is_active' => 'nullable' . ($this->filled('is_active') ? '|accepted' : ''),
         ];
     }
 
