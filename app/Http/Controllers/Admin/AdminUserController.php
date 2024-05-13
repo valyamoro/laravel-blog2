@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\UserRegisteredEvent;
 use App\Http\Requests\AdminUserRequest;
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Models\AdminUser;
 use App\Services\AdminUsers\AdminUserService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AdminUserController extends BaseController
 {
     public function __construct(private readonly AdminUserService $adminUserService) {}
 
-    public function index(AdminUserRequestSearch $request): View
+    public function index(Request $request): View
     {
         $title = 'Администраторы';
 
