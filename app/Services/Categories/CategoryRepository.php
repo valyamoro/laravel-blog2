@@ -15,20 +15,19 @@ final class CategoryRepository
     {
         $builder = Category::query();
 
-        $paginator = $builder
-            ->orderByDesc('id')
-            ->paginate($perPage)
-            ->withQueryString();
+        $builderSearch = clone $builder;
+        $builderSearch = $this->search($request, $builderSearch);
 
-        $paginatorWithSearch = $this->search($request, $builder);
+        if ($builderSearch->count() === 0) {
+            $request->merge(['is_exists' => false]);
 
-        if ($paginatorWithSearch->count() === 0 || ($request->has('q') && empty($request->input('q')))) {
-            $paginator->isEmptyItems = true;
-
-            return $paginator;
+            return $builder
+                ->orderByDesc('id')
+                ->paginate($perPage)
+                ->withQueryString();
         }
 
-        return $paginatorWithSearch
+        return $builderSearch
             ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();
@@ -36,7 +35,7 @@ final class CategoryRepository
 
     private function search(Request $request, Builder $builder): Builder
     {
-        if ($request->filled('q')) {
+        if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
             $builder->orWhere(DB::raw('lower(name)'), 'like', $like);
         }
