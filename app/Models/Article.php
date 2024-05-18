@@ -30,7 +30,7 @@ class Article extends BaseModel
 
     protected $fillable = [
         'category_id',
-        'user_id',
+        'admin_user_id',
         'title',
         'slug',
         'annotation',
@@ -55,7 +55,7 @@ class Article extends BaseModel
 
     public function adminUser(): BelongsTo
     {
-        return $this->belongsTo(AdminUser::class, 'user_id');
+        return $this->belongsTo(AdminUser::class);
     }
 
     public function category(): BelongsTo
