@@ -28,10 +28,10 @@ final class ArticleService
     {
         $request->merge(['thumbnail' => $request->hasFile('thumbnail')
             ? $this->uploadImage($request, 'uploads', 'public')
-            : null,
+            : '',
         ]);
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
-        $request->merge(['user_id' => auth()->guard('admin')->user()->id]);
+        $request->merge(['admin_user_id' => auth()->guard('admin')->user()->id]);
 
         return $this->articleRepository->create($request);
     }
@@ -46,10 +46,9 @@ final class ArticleService
             }
         }
 
-        $request->merge(['thumbnail' => $request->hasFile('thumbnail')
-            ? $this->uploadImage($request, 'uploads', 'public')
-            : null,
-        ]);
+        if ($request->hasFile('thumbnail')) {
+            $request->merge(['thumbnail' => $this->uploadImage($request, 'uploads', 'public')]);
+        }
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 
         return $this->articleRepository->update($request, $article);

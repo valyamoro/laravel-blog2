@@ -34,7 +34,7 @@ final class CategoryService
     {
         $request->merge(['thumbnail' => $request->hasFile('thumbnail')
             ? $this->uploadImage($request, 'uploads', 'public')
-            : null,
+            : '',
         ]);
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 
@@ -51,10 +51,9 @@ final class CategoryService
             }
         }
 
-        $request->merge(['thumbnail' => $request->hasFile('thumbnail')
-            ? $this->uploadImage($request, 'uploads', 'public')
-            : null,
-        ]);
+        if ($request->hasFile('thumbnail')) {
+            $request->merge(['thumbnail' => $this->uploadImage($request, 'uploads', 'public')]);
+        }
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 
         return $this->categoryRepository->update($request, $category);
