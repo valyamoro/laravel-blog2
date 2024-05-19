@@ -66,8 +66,8 @@
                     </div>
                 </div>
                 <div style="margin-left: 20px; margin-top: 10px">
-                    @if (isset($paginator->isEmptyItems))
-                        <p>По вашему запросу, ничего не найдено.</p>
+                    @if (request()->has('is_exists') || (request()->has('q') && empty(request()->input('q'))))
+                        <p>По вашему запросу: "{{ request()->input('q') }}" , ничего не найдено.</p>
                     @endif
                 </div>
                 <div class="card body table-responsive p-0">

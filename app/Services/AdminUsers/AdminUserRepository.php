@@ -15,8 +15,19 @@ final class AdminUserRepository
     {
         $builder = AdminUser::query();
 
-        $builder = $this->search($request, $builder);
-        return $builder
+        $builderSearch = clone $builder;
+        $builderSearch = $this->search($request, $builderSearch);
+
+        if ($builderSearch->count() === 0) {
+            $request->merge(['is_exists' => false]);
+
+            return $builder
+                ->orderByDesc('id')
+                ->paginate($perPage)
+                ->withQueryString();
+        }
+
+        return $builderSearch
             ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();
@@ -24,10 +35,9 @@ final class AdminUserRepository
 
     private function search(Request $request, Builder $builder): Builder
     {
-        if ($request->filled('q')) {
-            $like = mb_strtolower("%{$request->input('q')}%");
+        if ($request->filled('q') && !empty($request->input('q'))) {
+            $like = mb_strtolower('%' . $request->input('q') . '%');
             $builder->orWhere(DB::raw('lower(username)'), 'like', $like);
-            $builder->orWhere(DB::raw('lower(email)'), 'like', $like);
         }
 
         return $builder;
