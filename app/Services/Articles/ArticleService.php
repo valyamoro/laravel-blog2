@@ -67,4 +67,9 @@ final class ArticleService
         return $this->articleRepository->destroy($article);
     }
 
+    public function getSelectedTagIds(Article $article): array
+    {
+        return $article->tags->pluck('id')->toArray();
+    }
+
 }

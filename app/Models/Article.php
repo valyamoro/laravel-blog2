@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Category
@@ -57,6 +58,28 @@ class Article extends BaseModel
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($article) {
+            $article->tags()->detach();
+        });
+
+        static::updated(function ($article) {
+            $article->tags()->sync(request('tags'));
+        });
+
+        static::created(function ($article) {
+            $article->tags()->attach(request()->input('tags'));
+        });
     }
 
 }

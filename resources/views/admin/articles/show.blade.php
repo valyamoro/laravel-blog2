@@ -12,7 +12,8 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin-users.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('articles.show', $item) }}">Страница статьи</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('articles.show', $item) }}">Страница
+                                статьи</a></li>
                     </ol>
                 </div>
             </div>
@@ -44,9 +45,21 @@
                 <p class="text-muted">
                     {{ $item->category->name }}
                 </p>
+                @if([] !== $item->tags->toArray())
+                    <strong>Тэги</strong>
+                    <p class="text-muted">
+                        @foreach($item->tags as $tag)
+                            {{ $tag->name }}
+                        @endforeach
+                    </p>
+                @endif
                 <strong>Статус</strong>
                 <p class="text-muted">
-                    @if($item->is_active === true) Активен @else Не активен @endif
+                    @if($item->is_active === true)
+                        Активен
+                    @else
+                        Не активен
+                    @endif
                 </p>
                 <strong>Содержимое статьи</strong>
                 <p class="text-muted">
