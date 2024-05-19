@@ -16,7 +16,7 @@ class ArticleFactory extends Factory
 
         return [
             'category_id' => mt_rand(1, 5),
-            'user_id' => mt_rand(1, 5),
+            'admin_user_id' => mt_rand(1, 5),
             'title' => $title,
             'slug' => Str::slug($title),
             'annotation' => fake()->realText(mt_rand(10, 100)),
