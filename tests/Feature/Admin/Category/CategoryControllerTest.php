@@ -31,7 +31,7 @@ class CategoryControllerTest extends TestCase
     {
         $title = 'Категории';
         $perPage = 5;
-        $request = new AdminUserRequestSearch();
+        $request = new Request();
 
         $response = $this->get(route('categories.index'));
         $categories = $this->categoryService->getAllWithPagination($request, $perPage);
@@ -105,7 +105,6 @@ class CategoryControllerTest extends TestCase
         $requestData = [
             'parent_id' => 1,
             'name' => 'test',
-            'is_active' => false,
         ];
         $categoryData = [
             'parent_id' => 2,
@@ -114,13 +113,14 @@ class CategoryControllerTest extends TestCase
         ];
         $category = Category::factory()->create($categoryData);
 
-        $response = $this->patch(route('categories.update', $category), $requestData);
+        $response = $this->put(route('categories.update', $category), $requestData);
 
         $this->assertDatabaseCount(Category::class, 2);
         $this->assertDatabaseHas(Category::class, $requestData);
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('categories.index'));
     }
+
     public function testCategoryDestroy(): void
     {
         $categoryData = [

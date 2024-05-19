@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Services\Tags\TagRepository;
 use App\Services\Tags\TagService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class TagControllerTest extends TestCase
@@ -30,7 +31,7 @@ class TagControllerTest extends TestCase
     {
         $perPage = 5;
         $title = 'Тэги';
-        $request = new AdminUserRequestSearch();
+        $request = new Request();
 
         $response = $this->get(route('tags.index'));
         $tags = $this->tagService->getAllWithPagination($request, $perPage);
