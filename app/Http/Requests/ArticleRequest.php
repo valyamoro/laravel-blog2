@@ -20,6 +20,8 @@ class ArticleRequest extends FormRequest
             'content' => 'required|min:1000|max:1000000',
             'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png|dimensions:ratio=1',
             'is_active' => 'nullable' . ($this->filled('is_active') ? '|accepted' : ''),
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ];
     }
 

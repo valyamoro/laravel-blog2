@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Services\Articles\ArticleService;
 use App\Services\Categories\CategoryService;
+use App\Services\Tags\TagService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,6 +17,7 @@ class ArticleController extends Controller
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly CategoryService $categoryService,
+        private readonly TagService $tagService,
     )
     {
     }
@@ -38,10 +40,12 @@ class ArticleController extends Controller
         $title = 'Добавить';
 
         $categories = $this->categoryService->getForSelect();
+        $tags = $this->tagService->getForSelect();
 
         return view('admin.articles.create', [
             'title' => $title,
             'categories' => $categories,
+            'tagList' => $tags,
         ]);
     }
 
@@ -71,11 +75,15 @@ class ArticleController extends Controller
         $title = 'Редактировать: ' . $article->title;
 
         $categories = $this->categoryService->getForSelect();
+        $selectedTagIds = $this->articleService->getSelectedTagIds($article);
+        $tags = $this->tagService->getForSelect();
 
         return view('admin.articles.edit', [
-            'title' => $title,
             'item' => $article,
+            'title' => $title,
             'categories' => $categories,
+            'selectedTagIds' => $selectedTagIds,
+            'tagList' => $tags,
         ]);
     }
 

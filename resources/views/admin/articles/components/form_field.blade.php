@@ -1,6 +1,8 @@
 <div class="mb-3">
     <label for="title" class="form-label">Название</label>
-    <input id="title" type="text" value="{{ old('title') ?? $item->title ?? '' }}" name="title" class="form-control @if(isset($errors)) @error('title') is-invalid @enderror @endif" aria-describedby="title" autocomplete="off">
+    <input id="title" type="text" value="{{ old('title') ?? $item->title ?? '' }}" name="title"
+           class="form-control @if(isset($errors)) @error('title') is-invalid @enderror @endif" aria-describedby="title"
+           autocomplete="off">
     @if(isset($errors))
         @error('title')
         <span class="text-red">{{ $message }}</span>
@@ -17,9 +19,22 @@
         @endif
     </select>
 </div><br>
+<div class="form-group">
+    <label for="tags">Тэги</label>
+    <select id="tags" name="tags[]" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Выбрать тэг" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+        @foreach($tagList as $idx => $name)
+            @if(isset($selectedTagIds) && in_array($idx, $selectedTagIds))
+                <option value="{{ $idx }}" selected>{{ $name }}</option>
+            @else
+                <option value="{{ $idx }}">{{ $name }}</option>
+            @endif
+        @endforeach
+    </select>
+</div><br>
 <div class="mb-3">
     <label for="annotation" class="form-label">Описание</label>
-    <textarea id="annotation" name="annotation" class="form-control">{{ old('annotation') ?? $item->annotation ?? '' }}</textarea>
+    <textarea id="annotation" name="annotation"
+              class="form-control">{{ old('annotation') ?? $item->annotation ?? '' }}</textarea>
     @if(isset($errors))
         @error('annotation')
         <span class="text-red">{{ $message }}</span>
@@ -35,8 +50,10 @@
         @enderror
     @endif
 </div>
+<br>
 <div class="custom-control custom-switch">
-    <input id="customSwitch" type="checkbox" name="is_active" class="custom-control-input" @if(isset($item) && $item->is_active === true) checked @endif>
+    <input id="customSwitch" type="checkbox" name="is_active" class="custom-control-input"
+           @if(isset($item) && $item->is_active === true) checked @endif>
     <label for="customSwitch" class="custom-control-label">Активировать</label>
 </div>
 <br>
@@ -53,5 +70,3 @@
 @if(isset($item) && isset($item->thumbnail))
     @include('admin.articles.components.image_profile', ['item' => $item])
 @endif
-<br>
-<br>
