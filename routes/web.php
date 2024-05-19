@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
@@ -19,4 +20,5 @@ Route::middleware(['admin.auth:admin', 'admin.banned:admin'])->group(function() 
     Route::resource('/admin-users', AdminUserController::class);
     Route::resource('/admin/tags', TagController::class);
     Route::resource('/admin/categories', CategoryController::class);
+    Route::resource('/admin/articles', ArticleController::class);
 });

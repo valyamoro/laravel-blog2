@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Tag
@@ -38,6 +39,11 @@ class Tag extends BaseModel
                 'source' => 'name',
             ],
         ];
+    }
+
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class);
     }
 
 }
