@@ -22,7 +22,22 @@
 @endsection
 
 @section('content')
-    <div class="col-md-3">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if(isset($errors))
+        @error('comment')
+        <span class="text-red">{{ $message }}</span>
+        @enderror
+    @endif
+    <div class="col-md-12">
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
                 <div class="text-center">
@@ -31,7 +46,6 @@
                 <h3 class="profile-username text-center">{{ $item->name }}</h3>
             </div>
         </div>
-
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Информация</h3>
@@ -65,6 +79,17 @@
                 <p class="text-muted">
                     {{ $item->content }}
                 </p>
+                <strong>Комментарии:</strong>
+                <br>
+                <br>
+                @include('admin.articles.components.comment_leave_forms')
+                <hr style=" border: none; border-top: 1px solid #000; margin: 20px 0;">
+                <br>
+                @if([] !== $item->comments()->where('is_active', '=', 1)->get()->toArray())
+                    @include('admin.articles.components.comment_list', ['item' => $item])
+                @else
+                    Комментариев нет!
+                @endif
             </div>
         </div>
     </div>
