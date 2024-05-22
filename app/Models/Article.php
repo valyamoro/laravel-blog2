@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Category
@@ -44,7 +45,7 @@ class Article extends BaseModel
     protected $casts = [
         'is_active' => 'boolean',
     ];
-    
+
     public function sluggable(): array
     {
         return [
@@ -84,6 +85,11 @@ class Article extends BaseModel
         static::created(function ($article) {
             $article->tags()->attach(request()->input('tags'));
         });
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
 }

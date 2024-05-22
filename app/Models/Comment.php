@@ -37,4 +37,19 @@ class Comment extends Model
         'is_active',
     ];
 
+    public function adminUser(): BelongsTo
+    {
+        return $this->belongsTo(AdminUser::class);
+    }
+
+    public function article(): BelongsTo
+    {
+        return $this->belongsTo(Article::class);
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
 }
