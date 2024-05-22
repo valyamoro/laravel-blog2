@@ -43,7 +43,7 @@ final class AdminUserRepository
         return $builder;
     }
 
-    public function create(AdminUserRequest $request): ?AdminUser
+    public function create(Request $request): ?AdminUser
     {
         $result = AdminUser::create($request->only((new AdminUser())->getFillable()));
 
