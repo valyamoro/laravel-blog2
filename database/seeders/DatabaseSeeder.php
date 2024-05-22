@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\AdminUser;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
         Tag::factory(12)->create();
         Category::factory(10)->create();
         Article::factory(10)->create();
+        Comment::factory(10)->create();
     }
 
 }
