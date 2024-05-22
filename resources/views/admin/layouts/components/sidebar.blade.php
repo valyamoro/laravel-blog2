@@ -50,6 +50,12 @@
                         <p>Статьи</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('comments.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-info"></i>
+                        <p>Комментарии</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
