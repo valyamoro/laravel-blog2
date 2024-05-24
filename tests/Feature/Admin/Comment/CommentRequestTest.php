@@ -4,6 +4,7 @@ namespace Admin\Comment;
 
 use App\Models\AdminUser;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -49,11 +50,12 @@ class CommentRequestTest extends TestCase
         $this->assertTrue(session()->hasOldInput('comment'));
     }
 
-    public function testCategoryValidateSuccess(): void
+    public function testValidateSuccess(): void
     {
-        Article::factory()->create(['id' => 1]);
+        Category::factory()->create();
+        $article = Article::factory()->create(['id' => 1]);
         $validRequestData = [
-            'article_id' => 1,
+            'article_id' => $article->id,
             'comment' => 'Test data comment',
         ];
 

@@ -4,6 +4,7 @@ namespace Admin\Comment;
 
 use App\Models\AdminUser;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Services\AdminUsers\AdminUserRepository;
 use App\Services\Comments\CommentRepository;
@@ -17,6 +18,7 @@ class CommentControllerTest extends TestCase
     use RefreshDatabase;
 
     private CommentService $commentService;
+    private AdminUser $adminUser;
 
     public function setUp(): void
     {
@@ -28,7 +30,8 @@ class CommentControllerTest extends TestCase
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
 
-        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+        Category::factory()->create();
+        $this->adminUser = AdminUser::factory()->create();
     }
 
     public function testGetViewCommentsIndex(): void
@@ -50,10 +53,11 @@ class CommentControllerTest extends TestCase
 
     public function testCommentCreate(): void
     {
-        Article::factory()->create(['id' => 1]);
+        $article = Article::factory()->create(['id' => 1]);
         $commentData = [
             'comment' => 'test comment data',
-            'article_id' => 1,
+            'article_id' => $article->id,
+            'admin_user_id' => auth('admin')->id(),
         ];
 
         $response = $this->post(route('comments.store'), $commentData);
@@ -65,11 +69,12 @@ class CommentControllerTest extends TestCase
 
     public function testGetViewCommentsShow(): void
     {
-        Article::factory()->create(['id' => 1]);
+        $article = Article::factory()->create(['id' => 1]);
         $commentData = [
             'id' => 1,
             'comment' => 'Test data comment',
-            'article_id' => 1,
+            'article_id' => $article->id,
+            'admin_user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
         $title = 'Комментарий: #1';
@@ -86,10 +91,11 @@ class CommentControllerTest extends TestCase
 
     public function testCommentUpdate(): void
     {
-        Article::factory()->create(['id' => 1]);
+        $article = Article::factory()->create(['id' => 1]);
         $commentData = [
             'comment' => 'Test data comment',
-            'article_id' => 1,
+            'article_id' => $article->id,
+            'admin_user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
 
@@ -103,10 +109,11 @@ class CommentControllerTest extends TestCase
 
     public function testCommentDestroy(): void
     {
-        Article::factory()->create(['id' => 1]);
+        $article = Article::factory()->create(['id' => 1]);
         $commentData = [
             'comment' => 'Test data comment',
-            'article_id' => 1,
+            'article_id' => $article->id,
+            'admin_user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
 

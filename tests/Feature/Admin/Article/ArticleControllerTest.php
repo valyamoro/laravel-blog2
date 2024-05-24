@@ -92,6 +92,7 @@ class ArticleControllerTest extends TestCase
 
     public function testGetViewArticleEdit(): void
     {
+        Category::factory()->create(['id' => 1]);
         $articleData = [
             'category_id' => 1,
             'title' => 'test',
