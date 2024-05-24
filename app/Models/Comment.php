@@ -25,16 +25,16 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
     protected $fillable = [
         'comment',
         'parent_id',
         'admin_user_id',
         'article_id',
         'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function adminUser(): BelongsTo
@@ -49,7 +49,7 @@ class Comment extends Model
 
     public function children(): HasMany
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 
 }

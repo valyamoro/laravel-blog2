@@ -11,8 +11,9 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin-users.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('comments.show', $item) }}">Страница комментария</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('comments.index') }}">Список комментариев</a></li>
+                        <li class="breadcrumb-item active">Страница комментария</li>
                     </ol>
                 </div>
             </div>
