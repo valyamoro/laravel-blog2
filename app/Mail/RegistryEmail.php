@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\AdminUser;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,7 +13,7 @@ class RegistryEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public AdminUser $adminUser) {}
+    public function __construct(public Model $item) {}
 
     public function envelope(): Envelope
     {
