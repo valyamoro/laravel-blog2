@@ -17,8 +17,6 @@ class CommentRequest extends FormRequest
             'parent_id' => 'nullable|int' . ($this->input('parent_id') !== '0' ? '|exists:comments,id' : ''),
             'article_id' => 'nullable|int|exists:articles,id',
             'comment' => 'nullable|string|min:5|max:255',
-            'username' => ($this->has('username') ? 'required|string|min:2|max:255|regex:/[A-Za-zА-ЯЁа-яё]+/' : 'nullable'),
-            'email' => ($this->has('email') ? 'required|string|max:255|email|unique:admin_users,email' : 'nullable'),
         ];
     }
 

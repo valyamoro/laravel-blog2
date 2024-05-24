@@ -4,7 +4,6 @@ namespace App\Services\Comments;
 
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
-use App\Services\AdminUsers\AdminUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -12,8 +11,9 @@ final class CommentService
 {
     public function __construct(
         private readonly CommentRepository $commentRepository,
-        private readonly AdminUserRepository $adminUserRepository,
-    ) {}
+    )
+    {
+    }
 
     public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
@@ -22,17 +22,7 @@ final class CommentService
 
     public function create(CommentRequest $request): ?Comment
     {
-        if ($request->filled('username') && $request->filled('email')) {
-            $result = $this->adminUserRepository->create($request);
-
-            if (!$result) {
-                return null;
-            }
-
-            $request->merge(['admin_user_id' => $result->id]);
-        } else {
-            $request->merge(['admin_user_id' => auth()->guard('admin')->user()->id]);
-        }
+        $request->merge(['admin_user_id' => auth()->guard('admin')->user()->id]);
         $request->merge(['is_active' => 0]);
 
         return $this->commentRepository->create($request);
