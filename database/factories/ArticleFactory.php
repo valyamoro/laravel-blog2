@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\AdminUser;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -15,8 +17,8 @@ class ArticleFactory extends Factory
         $title = fake()->unique()->words(mt_rand(1, 2), true);
 
         return [
-            'category_id' => mt_rand(1, 5),
-            'admin_user_id' => mt_rand(1, 5),
+            'category_id' => mt_rand(1, Category::get()->count()),
+            'admin_user_id' => mt_rand(1, AdminUser::get()->count()),
             'title' => $title,
             'slug' => Str::slug($title),
             'annotation' => fake()->realText(mt_rand(10, 100)),

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services\AdminUsers;
+namespace App\Services\Comments;
 
-use App\Http\Requests\AdminUserRequest;
-use App\Models\AdminUser;
+use App\Http\Requests\CommentRequest;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
-final class AdminUserRepository
+final class CommentRepository
 {
     public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
-        $builder = AdminUser::query();
+        $builder = Comment::query();
 
         $builderSearch = clone $builder;
         $builderSearch = $this->search($request, $builderSearch);
@@ -37,29 +37,29 @@ final class AdminUserRepository
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
-            $builder->orWhere(DB::raw('lower(username)'), 'like', $like);
+            $builder->orWhere(DB::raw('lower(content)'), 'like', $like);
         }
 
         return $builder;
     }
 
-    public function create(Request $request): ?AdminUser
+    public function create(CommentRequest $request): ?Comment
     {
-        $result = AdminUser::create($request->only((new AdminUser())->getFillable()));
+        $result = Comment::create($request->only((new Comment())->getFillable()));
 
         return $result ?? null;
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): ?AdminUser
+    public function update(Request $request, Comment $comment): ?Comment
     {
-        $result = $adminUser->update($request->only($adminUser->getFillable()));
+        $result = $comment->update($request->only($comment->getFillable()));
 
-        return $result ? $adminUser : null;
+        return $result ? $comment : null;
     }
 
-    public function destroy(AdminUser $adminUser): ?bool
+    public function destroy(Comment $comment): ?bool
     {
-        return $adminUser->delete();
+        return $comment->delete();
     }
 
 }
