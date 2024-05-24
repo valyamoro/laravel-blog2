@@ -28,7 +28,7 @@ final class CommentService
         return $this->commentRepository->create($request);
     }
 
-    public function update(CommentRequest $request, Comment $tag): ?Comment
+    public function update(Request $request, Comment $tag): ?Comment
     {
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 

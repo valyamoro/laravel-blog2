@@ -42,7 +42,8 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/plugins/dropzone/min/dropzone.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/adminlte.min.css') }}">
-</head>
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     @include('admin.layouts.components.navbar')
@@ -111,9 +112,12 @@
 <script src="{{ asset('assets/admin/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
 <!-- dropzonejs -->
 <script src="{{ asset('assets/admin/plugins/dropzone/min/dropzone.min.js') }}"></script>
-
 <script>
     $(function () {
         $('.select2').select2()
     })
 </script>
+
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+

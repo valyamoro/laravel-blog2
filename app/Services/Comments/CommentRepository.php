@@ -50,7 +50,7 @@ final class CommentRepository
         return $result ?? null;
     }
 
-    public function update(CommentRequest $request, Comment $comment): ?Comment
+    public function update(Request $request, Comment $comment): ?Comment
     {
         $result = $comment->update($request->only($comment->getFillable()));
 

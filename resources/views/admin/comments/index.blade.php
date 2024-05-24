@@ -27,11 +27,6 @@
                 <div class="card-header">
                     <div class="card-title"><a href="{{ route('comments.create') }}" type="button" class="btn btn-block btn-primary">Добавить</a></div>
                     <div class="card-tools">
-                        @if(session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                         <div class="input-group align-items-center">
                             @if(isset($errors))
                                 @error('q')

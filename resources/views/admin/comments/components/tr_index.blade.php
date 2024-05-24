@@ -14,12 +14,15 @@
     </td>
     <td>
         <button type="button" class="btn btn-secondary">
-            <a href="{{ route('comments.show', $value) }}" style="color: inherit; text-decoration: none;">Редактировать</a>
+            <a href="{{ route('comments.show', $value) }}"
+               style="color: inherit; text-decoration: none;">Редактировать</a>
         </button>
         <form action="{{ route('comments.destroy', $value) }}" method="post">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger" onclick="if(!confirm('Вы уверены, что хотите удалить комментарий?')) return false" title="Удалить">Удалить
+            <button type="submit" class="btn btn-danger"
+                    onclick="if(!confirm('Вы уверены, что хотите удалить комментарий?')) return false" title="Удалить">
+                Удалить
             </button>
         </form>
     </td>
@@ -28,7 +31,6 @@
 <script>
     function updateActiveStatus(id, isActive) {
         let optionsForRequestData;
-
         if (isActive) {
             optionsForRequestData = {
                 is_active: isActive,
@@ -39,11 +41,22 @@
                 _token: '{{ csrf_token() }}'
             }
         }
-
         $.ajax({
             url: '/admin/comments/' + id,
             method: 'PATCH',
             data: optionsForRequestData,
+            success: function (response) {
+            },
+            error: function (xhr, status, error) {
+            }
         });
+        toastr.options = {
+            "positionClass": "toast-top-right",
+            "timeOut": "1000",
+            "extendedTimeOut": "2000",
+            "closeButton": true
+        }
+
+        toastr.success('Успешно сохранено!');
     }
 </script>
