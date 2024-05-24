@@ -23,8 +23,11 @@ class DatabaseSeeder extends Seeder
         AdminUser::factory(25)->create();
         Tag::factory(12)->create();
         Category::factory(10)->create();
-        Article::factory(10)->create();
-        Comment::factory(10)->create();
+        Article::factory(100)->create();
+        $comments = Comment::factory(40)->create();
+        $comments->random(10)->each(function ($comment) {
+            Comment::factory()->withParent($comment)->create();
+        });
     }
 
 }
