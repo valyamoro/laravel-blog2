@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('/admin')->group(function() {
@@ -23,4 +24,5 @@ Route::middleware(['admin.auth:admin', 'admin.banned:admin'])->group(function() 
     Route::resource('/admin/categories', CategoryController::class);
     Route::resource('/admin/articles', ArticleController::class);
     Route::resource('/admin/comments', CommentController::class);
+    Route::resource('/admin/users', UserController::class);
 });
