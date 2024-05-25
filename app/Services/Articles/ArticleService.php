@@ -31,7 +31,7 @@ final class ArticleService
             : '',
         ]);
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
-        $request->merge(['admin_user_id' => auth()->guard('admin')->user()->id]);
+        $request->merge(['user_id' => auth()->guard('admin')->user()->id]);
 
         return $this->articleRepository->create($request);
     }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Category
+ * Class Article
  *
  * @property int $id ID
  * @property int $category_id ID категории
@@ -57,7 +57,7 @@ class Article extends BaseModel
 
     public function adminUser(): BelongsTo
     {
-        return $this->belongsTo(AdminUser::class);
+        return $this->belongsTo(AdminUser::class, 'user_id');
     }
 
     public function category(): BelongsTo
