@@ -45,8 +45,6 @@ class UserController extends BaseController
             return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        event(new UserRegisteredEvent(new User($request->input())));
-
         return redirect()->route('users.index')->with('success', trans('messages.success.save'));
     }
 
