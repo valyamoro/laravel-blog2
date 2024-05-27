@@ -42,14 +42,12 @@ class UserController extends BaseController
         $result = $this->userService->create($request);
 
         if (!$result) {
-            $errorSave = config('messages.error.save');
-            return back()->withErrors(['error' => $errorSave]);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
         event(new UserRegisteredEvent(new User($request->input())));
 
-        $successSave = config('messages.success.save');
-        return redirect()->route('users.index')->with('success', $successSave);
+        return redirect()->route('users.index')->with('success', trans('messages.success.save'));
     }
 
     public function show(User $user): View
@@ -77,12 +75,10 @@ class UserController extends BaseController
         $result = $this->userService->update($request, $user);
 
         if (!$result) {
-            $errorSave = config('messages.error.save');
-            return back()->withErrors(['error' => $errorSave]);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        $successSave = config('messages.success.save');
-        return redirect()->route('users.index')->with('success', $successSave);
+        return redirect()->route('users.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(User $user): RedirectResponse
@@ -90,12 +86,10 @@ class UserController extends BaseController
         $result = $this->userService->destroy($user);
 
         if (!$result) {
-            $errorDestroy = config('messages.error.destroy');
-            return back()->withErrors(['error' => $errorDestroy]);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        $successDestroy = config('messages.success.destroy');
-        return redirect()->route('users.index')->with('success', $successDestroy);
+        return redirect()->route('users.index')->with('success', trans('messages.success.destroy'));
     }
 
 }
