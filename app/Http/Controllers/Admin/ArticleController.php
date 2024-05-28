@@ -54,10 +54,10 @@ class ArticleController extends Controller
         $result = $this->articleService->create($request);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.save'));
     }
 
     public function show(Article $article): View
@@ -92,10 +92,10 @@ class ArticleController extends Controller
         $result = $this->articleService->update($request, $article);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(Article $article): RedirectResponse
@@ -103,10 +103,10 @@ class ArticleController extends Controller
         $result = $this->articleService->destroy($article);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка удаления.']);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно удалено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.destroy'));
     }
 
 }

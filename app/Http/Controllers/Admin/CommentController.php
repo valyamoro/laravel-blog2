@@ -40,7 +40,7 @@ class CommentController extends BaseController
         $result = $this->commentService->create($request);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
         return redirect()->back()->with('success', 'Ваш комментарий был успешно принят, но будет опубликован после проверки модератором.');
@@ -66,10 +66,10 @@ class CommentController extends BaseController
         $result = $this->commentService->update($request, $comment);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('comments.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('comments.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(Comment $comment): RedirectResponse
@@ -77,10 +77,10 @@ class CommentController extends BaseController
         $result = $this->commentService->destroy($comment);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка удаления.']);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        return redirect()->route('comments.index')->with('success', 'Успешно удалено.');
+        return redirect()->route('comments.index')->with('success', trans('messages.success.destroy'));
     }
 
 }
