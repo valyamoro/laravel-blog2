@@ -5,21 +5,21 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Requests\CommentStatusRequest;
 use App\Models\Comment;
 use App\Services\Comments\CommentService;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 
 class UpdateCommentStatusController extends BaseController
 {
     public function __construct(private readonly CommentService $commentService) {}
 
-    public function __invoke(CommentStatusRequest $request, Comment $comment): RedirectResponse
+    public function __invoke(CommentStatusRequest $request, Comment $comment): JsonResponse
     {
         $result = $this->commentService->update($request, $comment);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+            return response()->json(['error' => 'Ошибка сохранения.'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);
         }
 
-        return redirect()->route('comments.index');
+        return response()->json(['success' => 'Успешно сохранено!!'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);
     }
 
 }

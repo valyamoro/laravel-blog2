@@ -8,7 +8,7 @@
         <div class="custom-control custom-switch">
             <input id="customSwitch_{{ $value->id }}" type="checkbox" name="is_active" class="custom-control-input"
                    @if(isset($value) && $value->is_active === true) checked @endif
-                   onchange="updateActiveStatus({{ $value->id }}, this.checked)">
+                   onchange="updateActiveStatus({{ $value->id }}, this.checked, 'comment')">
             <label for="customSwitch_{{ $value->id }}" class="custom-control-label"></label>
         </div>
     </td>
@@ -27,36 +27,3 @@
         </form>
     </td>
 </tr>
-
-<script>
-    function updateActiveStatus(id, isActive) {
-        let optionsForRequestData;
-        if (isActive) {
-            optionsForRequestData = {
-                is_active: isActive,
-                _token: '{{ csrf_token() }}'
-            }
-        } else {
-            optionsForRequestData = {
-                _token: '{{ csrf_token() }}'
-            }
-        }
-        $.ajax({
-            url: '/admin/comments/' + id,
-            method: 'PATCH',
-            data: optionsForRequestData,
-            success: function (response) {
-            },
-            error: function (xhr, status, error) {
-            }
-        });
-        toastr.options = {
-            "positionClass": "toast-top-right",
-            "timeOut": "1000",
-            "extendedTimeOut": "2000",
-            "closeButton": true
-        }
-
-        toastr.success('Успешно сохранено!');
-    }
-</script>
