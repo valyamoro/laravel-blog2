@@ -22,7 +22,7 @@ final class CommentService
 
     public function create(CommentRequest $request): ?Comment
     {
-        $request->merge(['admin_user_id' => auth()->guard('admin')->user()->id]);
+        $request->merge(['user_id' => auth()->guard('admin')->user()->id]);
         $request->merge(['is_active' => 0]);
 
         return $this->commentRepository->create($request);

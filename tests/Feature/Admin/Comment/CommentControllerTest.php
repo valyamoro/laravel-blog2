@@ -57,7 +57,6 @@ class CommentControllerTest extends TestCase
         $commentData = [
             'comment' => 'test comment data',
             'article_id' => $article->id,
-            'admin_user_id' => auth('admin')->id(),
         ];
 
         $response = $this->post(route('comments.store'), $commentData);
@@ -74,7 +73,7 @@ class CommentControllerTest extends TestCase
             'id' => 1,
             'comment' => 'Test data comment',
             'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
+            'user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
         $title = 'Комментарий: #1';
@@ -95,7 +94,7 @@ class CommentControllerTest extends TestCase
         $commentData = [
             'comment' => 'Test data comment',
             'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
+            'user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
 
@@ -113,7 +112,7 @@ class CommentControllerTest extends TestCase
         $commentData = [
             'comment' => 'Test data comment',
             'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
+            'user_id' => $this->adminUser->id,
         ];
         $comment = Comment::factory()->create($commentData);
 

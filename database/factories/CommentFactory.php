@@ -16,7 +16,7 @@ class CommentFactory extends Factory
     {
         return [
             'comment' => fake()->paragraph(1),
-            'admin_user_id' => mt_rand(1, AdminUser::get()->count()),
+            'user_id' => mt_rand(1, AdminUser::get()->count()),
             'article_id' => mt_rand(1, Article::get()->count()),
         ];
     }
