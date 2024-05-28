@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $comments->random(10)->each(function ($comment) {
             Comment::factory()->withParent($comment)->create();
         });
+        User::factory(25)->create();
     }
 
 }
