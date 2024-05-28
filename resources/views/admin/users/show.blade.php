@@ -58,7 +58,7 @@
                         <p class="text-muted">Нет комментариев</p>
                     @else
                         <ul class="list-group list-group-flush">
-                            @foreach($item->comments()->get() as $comment)
+                            @foreach($item->comments()->paginate(5) as $comment)
                                 <li class="list-group-item">
                                     <strong>{{ $comment->created_at->format('d.m.Y H:i') }}:</strong>
                                     <p>{{ $comment->comment }}</p>
