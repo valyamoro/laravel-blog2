@@ -18,9 +18,8 @@
         <form action="{{ route('tags.destroy', $value) }}" method="post">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger"
-                    onclick="if(!confirm('Вы уверены, что хотите удалить тэг?')) return false"
-                    title="Удалить">Удалить
+            <button style="width: 131px" type="submit" class="btn btn-danger" onclick="if(!confirm('Вы уверены, что хотите удалить тэг?')) return false" title="Удалить">
+                Удалить
             </button>
         </form>
     </td>

@@ -73,7 +73,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Айди</th>
+                            <th>№</th>
                             <th>Дата</th>
                             <th>Имя</th>
                             <th>Email</th>

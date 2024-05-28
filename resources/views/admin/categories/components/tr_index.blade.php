@@ -2,7 +2,7 @@
     <td>{{ $value->id }}</td>
     <td>{{ $value->created_at->format('d.m.y H:i:s') }}</td>
     <td>@if(isset($value->thumbnail)) @include('admin.categories.components.image_profile', ['item' => $value]) @endif</td>
-    <td><a href="{{ route('categories.show', $value) }}">{{ $value->name }}</a></td>
+    <td><a href="{{ route('categories.edit', $value) }}">{{ $value->name }}</a></td>
     <td>{{ $value->articles()->get()->count() }}</td>
     <td>{{ $value->view }}</td>
     <td>
@@ -20,8 +20,11 @@
         <form action="{{ route('categories.destroy', $value) }}" method="post">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger" onclick="if(!confirm('Вы уверены, что хотите удалить категорию?')) return false" title="Удалить">Удалить
+            <button style="width: 131px" type="submit" class="btn btn-danger" onclick="if(!confirm('Вы уверены, что хотите удалить категорию?')) return false" title="Удалить">Удалить
             </button>
         </form>
+        <button style="width: 131px" type="button" class="btn btn-primary">
+            <a href="{{ route('categories.show', $value) }}" style="color: inherit; text-decoration: none;">Страница</a>
+        </button>
     </td>
 </tr>

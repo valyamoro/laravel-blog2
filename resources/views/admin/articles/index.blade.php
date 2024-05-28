@@ -74,7 +74,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>№</th>
                             <th>Дата</th>
                             <th>Изображение</th>
                             <th>Название</th>

@@ -26,8 +26,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title"><a href="{{ route('tags.create') }}" type="button"
-                                               class="btn btn-block btn-primary">Добавить</a></div>
+                    <div class="card-title"><a href="{{ route('tags.create') }}" type="button" class="btn btn-block btn-primary">Добавить</a></div>
                     <div class="card-tools">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -60,7 +59,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
                 <div style="margin-left: 20px; margin-top: 10px">
                     @if (request()->has('is_exists') || (request()->has('q') && empty(request()->input('q'))))
@@ -71,7 +69,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Айди</th>
+                            <th>№</th>
                             <th>Дата</th>
                             <th>Имя</th>
                             <th>Статей</th>

@@ -2,9 +2,9 @@
     <td>{{ $value->id }}</td>
     <td>{{ $value->created_at->format('d.m.y H:i:s') }}</td>
     <td>@if(isset($value->thumbnail))
-            @include('admin.categories.components.image_profile', ['item' => $value])
+            @include('admin.articles.components.image_profile', ['item' => $value])
         @endif</td>
-    <td><a href="{{ route('articles.show', $value) }}">{{ $value->title }}</a></td>
+    <td><a href="{{ route('articles.edit', $value) }}">{{ $value->title }}</a></td>
     <td>0</td>
     <td>
         <div class="custom-control custom-switch">
@@ -22,10 +22,13 @@
         <form action="{{ route('articles.destroy', $value) }}" method="post">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger"
+            <button style="width: 131px" type="submit" class="btn btn-danger"
                     onclick="if(!confirm('Вы уверены, что хотите удалить статью?')) return false" title="Удалить">
                 Удалить
             </button>
         </form>
+        <button style="width: 131px" type="button" class="btn btn-primary">
+            <a href="{{ route('articles.show', $value) }}" style="color: inherit; text-decoration: none;">Страница</a>
+        </button>
     </td>
 </tr>

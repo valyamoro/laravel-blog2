@@ -65,7 +65,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
                 <div style="margin-left: 20px; margin-top: 10px">
                     @if (request()->has('is_exists') || (request()->has('q') && empty(request()->input('q'))))
@@ -76,7 +75,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Айди</th>
+                            <th>№</th>
                             <th>Дата</th>
                             <th>Имя</th>
                             <th>Email</th>

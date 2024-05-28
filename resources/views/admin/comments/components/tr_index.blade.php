@@ -1,7 +1,7 @@
 <tr>
     <td>{{ $value->id }}</td>
     <td>{{ $value->created_at->format('d.m.y H:i:s') }}</td>
-    <td><a href="{{ route('comments.show', $value) }}">{{ Str::limit($value->comment, 10) }}</a></td>
+    <td><a href="{{ route('comments.edit', $value) }}">{{ Str::limit($value->comment, 10) }}</a></td>
     <td><a href="{{ route('articles.show', $value->article->id) }}">{{ $value->article->title }}</a></td>
     <td><a href="{{ route('admin-users.show', $value->adminUser->id) }}">{{ $value->adminUser->username }}</a></td>
     <td>
@@ -20,8 +20,7 @@
         <form action="{{ route('comments.destroy', $value) }}" method="post">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger"
-                    onclick="if(!confirm('Вы уверены, что хотите удалить комментарий?')) return false" title="Удалить">
+            <button style="width: 131px" type="submit" class="btn btn-danger" onclick="if(!confirm('Вы уверены, что хотите удалить комментарий?')) return false" title="Удалить">
                 Удалить
             </button>
         </form>
