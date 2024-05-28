@@ -47,6 +47,7 @@ final class ArticleRepository
     public function create(Request $request): ?Article
     {
         $result = Article::create($request->input());
+        $result ? $this->createTags($request, $result) : null;
 
         return $result ? $result : null;
     }
@@ -54,8 +55,14 @@ final class ArticleRepository
     public function update(Request $request, Article $article): ?Article
     {
         $result = $article->update($request->input());
+        $result ? $this->createTags($request, $article) : null;
 
         return $result ? $article : null;
+    }
+
+    private function createTags(Request $request, Article $article): void
+    {
+        $article->tags()->sync($request->input('tags'));
     }
 
     public function destroy(Article $article): ?bool
