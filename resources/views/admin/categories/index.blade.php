@@ -99,4 +99,5 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
 @endsection

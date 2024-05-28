@@ -29,7 +29,7 @@ final class TagService
         return $this->tagRepository->create($request);
     }
 
-    public function update(TagRequest $request, Tag $tag): ?Tag
+    public function update(Request $request, Tag $tag): ?Tag
     {
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 

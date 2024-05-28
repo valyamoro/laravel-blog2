@@ -24,7 +24,7 @@ final class AdminUserService
         return $this->adminUserRepository->create($request);
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): ?AdminUser
+    public function update(Request $request, AdminUser $adminUser): ?AdminUser
     {
         $request->merge(['is_banned' => (bool)$request->input('is_banned')]);
         $request->merge(['password' => $request->filled('password') ? $request->input('password') : $adminUser->password]);

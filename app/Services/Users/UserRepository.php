@@ -50,7 +50,7 @@ final class UserRepository
         return $result ?? null;
     }
 
-    public function update(UserRequest $request, User $user): ?User
+    public function update(Request $request, User $user): ?User
     {
         $result = $user->update($request->only($user->getFillable()));
 

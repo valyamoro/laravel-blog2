@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Requests\IsActiveRequest;
 use App\Models\Comment;
+use App\Models\Tag;
 use App\Services\Comments\CommentService;
+use App\Services\Tags\TagService;
 use Illuminate\Http\JsonResponse;
 
-class UpdateCommentStatusController extends BaseController
+class UpdateTagStatusController extends BaseController
 {
-    public function __construct(private readonly CommentService $commentService) {}
+    public function __construct(private readonly TagService $tagService) {}
 
-    public function __invoke(IsActiveRequest $request, Comment $comment): JsonResponse
+    public function __invoke(IsActiveRequest $request, Tag $tag): JsonResponse
     {
-        $result = $this->commentService->update($request, $comment);
+        $result = $this->tagService->update($request, $tag);
 
         if (!$result) {
             return response()->json(['error' => 'Ошибка сохранения.'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);

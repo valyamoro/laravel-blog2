@@ -50,7 +50,7 @@ final class AdminUserRepository
         return $result ?? null;
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): ?AdminUser
+    public function update(Request $request, AdminUser $adminUser): ?AdminUser
     {
         $result = $adminUser->update($request->only($adminUser->getFillable()));
 

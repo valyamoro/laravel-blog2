@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Requests\IsActiveRequest;
+use App\Models\Article;
 use App\Models\Comment;
+use App\Services\Articles\ArticleService;
 use App\Services\Comments\CommentService;
 use Illuminate\Http\JsonResponse;
 
-class UpdateCommentStatusController extends BaseController
+class UpdateArticleStatusController extends BaseController
 {
-    public function __construct(private readonly CommentService $commentService) {}
+    public function __construct(private readonly ArticleService $articleService) {}
 
-    public function __invoke(IsActiveRequest $request, Comment $comment): JsonResponse
+    public function __invoke(IsActiveRequest $request, Article $article): JsonResponse
     {
-        $result = $this->commentService->update($request, $comment);
+        $result = $this->articleService->update($request, $article);
 
         if (!$result) {
             return response()->json(['error' => 'Ошибка сохранения.'])->setEncodingOptions(JSON_UNESCAPED_UNICODE);

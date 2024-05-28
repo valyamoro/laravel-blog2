@@ -1,8 +1,8 @@
-function updateActiveStatus(id, isActive, item) {
+function updateActiveStatus(id, item, statusName, statusValue) {
     let optionsForRequestData;
-    if (isActive) {
+    if (statusValue) {
         optionsForRequestData = {
-            is_active: isActive,
+            [statusName]: statusValue,
             _token: '{{ csrf_token() }}'
         }
     } else {
