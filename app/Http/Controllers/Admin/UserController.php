@@ -6,6 +6,7 @@ use App\Events\UserRegisteredEvent;
 use App\Http\Requests\UserRequest;
 use App\Models\AdminUser;
 use App\Models\User;
+use App\Services\Comments\CommentService;
 use App\Services\Users\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,10 @@ use Illuminate\View\View;
 
 class UserController extends BaseController
 {
-    public function __construct(private readonly UserService $userService) {}
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly CommentService $commentService,
+    ) {}
 
     public function index(Request $request): View
     {
@@ -48,13 +52,16 @@ class UserController extends BaseController
         return redirect()->route('users.index')->with('success', trans('messages.success.save'));
     }
 
-    public function show(User $user): View
+    public function show(Request $request, User $user): View
     {
         $title = 'Профиль пользователя: ' . $user->username;
+
+        $comments = $this->commentService->getAllWithPagination($request, config('pagination.pagination_5'));
 
         return view('admin.users.show', [
             'title' => $title,
             'item' => $user,
+            'paginator' => $comments,
         ]);
     }
 

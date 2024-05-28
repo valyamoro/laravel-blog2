@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -39,5 +40,10 @@ class User extends Authenticatable
         'is_banned' => 'boolean',
         'password' => 'hashed',
     ];
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 
 }

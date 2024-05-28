@@ -39,7 +39,7 @@ class Comment extends Model
 
     public function adminUser(): BelongsTo
     {
-        return $this->belongsTo(AdminUser::class);
+        return $this->belongsTo(AdminUser::class, 'user_id');
     }
 
     public function article(): BelongsTo
