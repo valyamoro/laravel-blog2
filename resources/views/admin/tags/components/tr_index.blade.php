@@ -2,7 +2,7 @@
     <td>{{ $value->id }}</td>
     <td>{{ $value->created_at->format('d.m.y H:i:s') }}</td>
     <td><a href="{{ route('tags.edit', $value) }}">{{ $value->name }}</a></td>
-    <td>0</td>
+    <td>{{ $value->articles()->get()->count() }}</td>
     <td>
         <div class="custom-control custom-switch">
             <input id="customSwitch_{{ $value->id }}" type="checkbox" name="is_active" class="custom-control-input"
