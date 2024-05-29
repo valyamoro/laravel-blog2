@@ -26,16 +26,14 @@ final class AdminUserService
 
     public function update(Request $request, AdminUser $adminUser): ?AdminUser
     {
+        if ($request->filled('password')) {
+            event(new AdminUserChangedPasswordEvent($adminUser, $request->input('password')));
+        }
+
         $request->merge(['is_banned' => (bool)$request->input('is_banned')]);
         $request->merge(['password' => $request->filled('password') ? $request->input('password') : $adminUser->password]);
 
-        $result = $this->adminUserRepository->update($request, $adminUser);
-
-        if ($request->has('password')) {
-            event(new AdminUserChangedPasswordEvent($result, $request->input('password')));
-        }
-
-        return $result;
+        return $this->adminUserRepository->update($request, $adminUser);
     }
 
     public function destroy(AdminUser $adminUser): ?bool
