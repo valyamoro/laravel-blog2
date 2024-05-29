@@ -2,7 +2,6 @@
 
 namespace Admin\Category;
 
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Models\AdminUser;
 use App\Models\Category;
 use App\Services\Categories\CategoryRepository;
@@ -21,17 +20,16 @@ class CategoryControllerTest extends TestCase
     {
         parent::setUp();
 
-        $categoryRepository = new CategoryRepository();
-        $this->categoryService = new CategoryService($categoryRepository);
+        $this->categoryService = new CategoryService(new CategoryRepository());
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
     }
 
     public function testGetViewCategoryIndex(): void
     {
-        $title = 'Категории';
-        $perPage = 5;
         $request = new Request();
+        $perPage = 5;
+        $title = 'Категории';
 
         $response = $this->get(route('categories.index'));
         $categories = $this->categoryService->getAllWithPagination($request, $perPage);
@@ -59,14 +57,14 @@ class CategoryControllerTest extends TestCase
 
     public function testCategoryCreate(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $tagData = [
-            'parent_id' => 1,
+        $category = Category::factory()->create(['id' => 1]);
+        $requestData = [
+            'parent_id' => $category->id,
             'name' => 'test',
             'is_active' => true,
         ];
-        $requestData = [
-            'parent_id' => 1,
+        $categoryData = [
+            'parent_id' => $category->id,
             'name' => 'test',
             'is_active' => true,
         ];
@@ -74,19 +72,17 @@ class CategoryControllerTest extends TestCase
         $response = $this->post(route('categories.store'), $requestData);
 
         $this->assertDatabaseCount(Category::class, 2);
-        $this->assertDatabaseHas(Category::class, $tagData);
+        $this->assertDatabaseHas(Category::class, $categoryData);
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('categories.index'));
     }
 
     public function testGetViewCategoryEdit(): void
     {
-        $categoryData = [
-            'parent_id' => 2,
+        $category = Category::factory()->create([
             'name' => 'test',
             'is_active' => false,
-        ];
-        $category = Category::factory()->create($categoryData);
+        ]);
         $title = 'Редактировать: test';
 
         $response = $this->get(route('categories.edit', $category));
@@ -101,17 +97,15 @@ class CategoryControllerTest extends TestCase
 
     public function testCategoryUpdate(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $requestData = [
-            'parent_id' => 1,
-            'name' => 'test',
-        ];
-        $categoryData = [
+        $category = Category::factory()->create([
             'parent_id' => 2,
             'name' => 'test2',
             'is_active' => true,
+        ]);
+        $requestData = [
+            'parent_id' => Category::factory()->create(['id' => 1])->id,
+            'name' => 'test',
         ];
-        $category = Category::factory()->create($categoryData);
 
         $response = $this->put(route('categories.update', $category), $requestData);
 
@@ -123,17 +117,16 @@ class CategoryControllerTest extends TestCase
 
     public function testCategoryDestroy(): void
     {
-        $categoryData = [
+        $category = Category::factory()->create([
             'parent_id' => 2,
             'name' => 'test',
             'is_active' => true,
-        ];
-        $category = Category::factory()->create($categoryData);
+        ]);
 
         $response = $this->delete(route('categories.destroy', $category));
 
         $this->assertDatabaseCount(Category::class, 0);
-        $this->assertDatabaseMissing(Category::class, $categoryData);
+        $this->assertDatabaseMissing(Category::class, $category->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('categories.index'));
     }

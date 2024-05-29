@@ -2,7 +2,6 @@
 
 namespace Admin\Tag;
 
-use App\Http\Requests\AdminUserRequestSearch;
 use App\Models\AdminUser;
 use App\Models\Tag;
 use App\Services\Tags\TagRepository;
@@ -21,17 +20,16 @@ class TagControllerTest extends TestCase
     {
         parent::setUp();
 
-        $tagRepository = new TagRepository();
-        $this->tagService = new TagService($tagRepository);
+        $this->tagService = new TagService(new TagRepository());
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
     }
 
     public function testGetViewTagsIndex(): void
     {
+        $request = new Request();
         $perPage = 5;
         $title = 'Тэги';
-        $request = new Request();
 
         $response = $this->get(route('tags.index'));
         $tags = $this->tagService->getAllWithPagination($request, $perPage);
@@ -78,12 +76,11 @@ class TagControllerTest extends TestCase
 
     public function testGetViewTagEdit(): void
     {
-        $tagData = [
+        $title = 'Редактировать: Test';
+        $tag = Tag::factory()->create([
             'name' => 'Test',
             'is_active' => true,
-        ];
-        $tag = Tag::factory()->create($tagData);
-        $title = 'Редактировать: Test';
+        ]);
 
         $response = $this->get(route('tags.edit', $tag));
 
@@ -97,15 +94,14 @@ class TagControllerTest extends TestCase
 
     public function testTagUpdate(): void
     {
+        $tag = Tag::factory()->create([
+            'name' => 'Test',
+            'is_active' => true,
+        ]);
         $requestData = [
             'name' => 'Test',
             'is_active' => true,
         ];
-        $tagData = [
-            'name' => 'Test',
-            'is_active' => true,
-        ];
-        $tag = Tag::factory()->create($tagData);
 
         $response = $this->put(route('tags.update', $tag), $requestData);
 
@@ -117,16 +113,15 @@ class TagControllerTest extends TestCase
 
     public function testTagDestroy(): void
     {
-        $tagData = [
+        $tag = Tag::factory()->create([
             'name' => 'Test',
             'is_active' => true,
-        ];
-        $tag = Tag::factory()->create($tagData);
+        ]);
 
         $response = $this->delete(route('tags.destroy', $tag));
 
         $this->assertDatabaseCount(Tag::class, 0);
-        $this->assertDatabaseMissing(Tag::class, $tagData);
+        $this->assertDatabaseMissing(Tag::class, $tag->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('tags.index'));
     }

@@ -25,20 +25,17 @@ class ArticleControllerTest extends TestCase
     {
         parent::setUp();
 
-        $categoryRepository = new CategoryRepository();
-        $this->categoryService = new CategoryService($categoryRepository);
-
-        $articleRepository = new ArticleRepository();
-        $this->articleService = new ArticleService($articleRepository);
+        $this->articleService = new ArticleService(new ArticleRepository());
+        $this->categoryService = new CategoryService(new CategoryRepository());
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
     }
 
     public function testGetViewArticleIndex(): void
     {
-        $title = 'Статьи';
-        $perPage = 5;
         $request = new Request();
+        $perPage = 5;
+        $title = 'Статьи';
 
         $response = $this->get(route('articles.index'));
         $articles = $this->articleService->getAllWithPagination($request, $perPage);
@@ -68,14 +65,14 @@ class ArticleControllerTest extends TestCase
 
     public function testArticleCreate(): void
     {
-        Category::factory()->create(['id' => 1]);
+        $category = Category::factory()->create(['id' => 1]);
         $articleData = [
-            'category_id' => 1,
+            'category_id' => $category->id,
             'title' => 'test',
             'is_active' => true,
         ];
         $requestData = [
-            'category_id' => 1,
+            'category_id' => $category->id,
             'title' => 'test',
             'annotation' => 'test description of article',
             'content' => Str::repeat('n', 10000),
@@ -90,15 +87,35 @@ class ArticleControllerTest extends TestCase
         $response->assertRedirect(route('articles.index'));
     }
 
+    public function testGetViewArticlesShow(): void
+    {
+        $article = Article::factory()->create([
+            'category_id' =>  Category::factory()->create(['id' => 1])->id,
+            'user_id' => AdminUser::factory()->create(['id' => 2])->id,
+            'title' => 'test article title',
+            'annotation' => 'test annotation article',
+            'content' => Str::repeat('n', 1000),
+            'is_active' => true,
+        ]);
+        $title = 'Статья: test article title';
+
+        $response = $this->get(route('articles.show', $article));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('admin.articles.show');
+        $response->assertViewHas([
+            'item' => $article,
+            'title' => $title,
+        ]);
+    }
+
     public function testGetViewArticleEdit(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $articleData = [
-            'category_id' => 1,
+        $article = Article::factory()->create([
+            'category_id' => Category::factory()->create(['id' => 1])->id,
             'title' => 'test',
             'is_active' => true,
-        ];
-        $article = Article::factory()->create($articleData);
+        ]);
         $title = 'Редактировать: test';
         $categories = $this->categoryService->getForSelect();
 
@@ -115,20 +132,19 @@ class ArticleControllerTest extends TestCase
 
     public function testArticleUpdate(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $articleData = [
-            'category_id' => 1,
-            'title' => 'test',
-            'is_active' => true,
-        ];
+        $category = Category::factory()->create(['id' => 1]);
         $requestData = [
-            'category_id' => 1,
+            'category_id' => $category->id,
             'title' => 'test',
             'annotation' => 'test description of article',
             'content' => Str::repeat('n', 10000),
             'is_active' => true,
         ];
-        $article = Article::factory()->create($articleData);
+        $article = Article::factory()->create([
+            'category_id' => $category->id,
+            'title' => 'test',
+            'is_active' => true,
+        ]);
 
         $response = $this->patch(route('articles.update', $article), $requestData);
 
@@ -137,20 +153,19 @@ class ArticleControllerTest extends TestCase
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('articles.index'));
     }
+
     public function testArticleDestroy(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $articleData = [
-            'category_id' => 1,
+        $article = Article::factory()->create([
+            'category_id' => Category::factory()->create(['id' => 1])->id,
             'title' => 'test',
             'is_active' => true,
-        ];
-        $article = Article::factory()->create($articleData);
+        ]);
 
         $response = $this->delete(route('articles.destroy', $article));
 
         $this->assertDatabaseCount(Article::class, 0);
-        $this->assertDatabaseMissing(Article::class, $articleData);
+        $this->assertDatabaseMissing(Article::class, $article->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('articles.index'));
     }

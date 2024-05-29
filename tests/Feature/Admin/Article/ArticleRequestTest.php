@@ -30,7 +30,7 @@ class ArticleRequestTest extends TestCase
             'thumbnail' => 'dqqdw#!@#',
             'is_active' => '$!@#!@',
         ];
-        $fieldErrorMessage = [
+        $fieldErrorMessages = [
             'category_id' => 'Значение поля category id должно быть целым числом.',
             'title' => 'Значение поля title имеет некорректный формат.',
             'content' => 'Поле описания обязательно.',
@@ -43,20 +43,20 @@ class ArticleRequestTest extends TestCase
         ];
 
         $this->post(route('articles.store'), $invalidRequestData)
-            ->assertInvalid($fieldErrorMessage);
+            ->assertInvalid($fieldErrorMessages);
 
         $this->assertTrue(session()->hasOldInput('title'));
     }
 
     public function testArticleValidateWithUniqueTitle(): void
     {
-        Category::factory()->create(['id' => 1]);
+        $category = Category::factory()->create(['id' => 1]);
         Article::factory()->create([
             'title' => 'test',
             'is_active' => true,
         ]);
         $invalidRequestData = [
-            'category_id' => 1,
+            'category_id' => $category->id,
             'title' => 'test',
         ];
         $fieldErrorMessage = [
@@ -71,14 +71,13 @@ class ArticleRequestTest extends TestCase
 
     public function testThumbnailValidateWithIncorrectFormat(): void
     {
-        Category::factory()->create(['id' => 1]);
         $file = UploadedFile::fake()->image('file.qwddqw', 150, 150);
         $invalidRequestData = [
-            'category_id' => 1,
+            'category_id' => Category::factory()->create(['id' => 1])->id,
             'title' => 'test',
             'thumbnail' => $file,
         ];
-        $fieldErrorMessage = [
+        $fieldErrorMessages = [
             'thumbnail' => [
                 'Пожалуйста, выберите изображение!',
                 'Файл, указанный в поле изображения, должен быть одного из следующих типов: jpeg, jpg, png.',
@@ -86,7 +85,7 @@ class ArticleRequestTest extends TestCase
         ];
 
         $this->post(route('articles.store'), $invalidRequestData)
-            ->assertInvalid($fieldErrorMessage);
+            ->assertInvalid($fieldErrorMessages);
 
         $this->assertTrue(session()->hasOldInput('title'));
     }
@@ -97,13 +96,13 @@ class ArticleRequestTest extends TestCase
             'title' => Str::repeat('n', 10000000),
             'content' => Str::repeat('n', 10000000),
         ];
-        $fieldErrorMessage = [
+        $fieldErrorMessages = [
             'title' => 'Количество символов в значении поля title не может превышать 255.',
             'content' => 'Количество символов в значении поля описания не может превышать 1000000.',
         ];
 
         $this->post(route('articles.store', $invalidRequestData))
-            ->assertInvalid($fieldErrorMessage);
+            ->assertInvalid($fieldErrorMessages);
 
         $this->assertTrue(session()->hasOldInput('title'));
         $this->assertTrue(session()->hasOldInput('content'));
@@ -130,12 +129,10 @@ class ArticleRequestTest extends TestCase
 
     public function testCategoryValidateSuccess(): void
     {
-        Category::factory()->create(['id' => 1]);
-        $file = UploadedFile::fake()->image('avatar.png', 215, 215);
         $validRequestData = [
-            'category_id' => 1,
+            'category_id' => Category::factory()->create(['id' => 1])->id,
             'title' => 'test',
-            'thumbnail' => $file,
+            'thumbnail' => UploadedFile::fake()->image('avatar.png', 215, 215),
             'content' => Str::repeat('n', 1000),
         ];
 
@@ -143,7 +140,7 @@ class ArticleRequestTest extends TestCase
         $article = Article::get()->last();
 
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseCount(Article::class,  1);
+        $this->assertDatabaseCount(Article::class, 1);
         Storage::disk('public')->assertExists($article->thumbnail);
     }
 
