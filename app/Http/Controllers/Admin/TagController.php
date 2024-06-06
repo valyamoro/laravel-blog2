@@ -41,10 +41,10 @@ class TagController extends Controller
         $result = $this->tagService->create($request);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('tags.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('tags.index')->with('success', trans('messages.success.save'));
     }
 
     public function show(Tag $tag)
@@ -62,15 +62,18 @@ class TagController extends Controller
         ]);
     }
 
-    public function update(TagRequest $request, Tag $tag): RedirectResponse
+    public function update(
+        TagRequest $request,
+        Tag $tag,
+    ): RedirectResponse
     {
         $result = $this->tagService->update($request, $tag);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('tags.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('tags.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(Tag $tag): RedirectResponse
@@ -78,10 +81,10 @@ class TagController extends Controller
         $result = $this->tagService->destroy($tag);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка удаления']);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        return redirect()->route('tags.index')->with('success', 'Успешно удалено.');
+        return redirect()->route('tags.index')->with('success', trans('messages.success.destroy'));
     }
 
 }

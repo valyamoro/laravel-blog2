@@ -12,15 +12,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly CategoryService $categoryService,
         private readonly TagService $tagService,
-    )
-    {
-    }
+    ) {}
 
     public function index(Request $request): View
     {
@@ -54,10 +52,10 @@ class ArticleController extends Controller
         $result = $this->articleService->create($request);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.save'));
     }
 
     public function show(Article $article): View
@@ -87,15 +85,18 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function update(ArticleRequest $request, Article $article): RedirectResponse
+    public function update(
+        ArticleRequest $request,
+        Article $article,
+    ): RedirectResponse
     {
         $result = $this->articleService->update($request, $article);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(Article $article): RedirectResponse
@@ -103,10 +104,10 @@ class ArticleController extends Controller
         $result = $this->articleService->destroy($article);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка удаления.']);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        return redirect()->route('articles.index')->with('success', 'Успешно удалено.');
+        return redirect()->route('articles.index')->with('success', trans('messages.success.destroy'));
     }
 
 }

@@ -28,7 +28,7 @@ class Comment extends Model
     protected $fillable = [
         'comment',
         'parent_id',
-        'admin_user_id',
+        'user_id',
         'article_id',
         'is_active',
     ];
@@ -39,7 +39,7 @@ class Comment extends Model
 
     public function adminUser(): BelongsTo
     {
-        return $this->belongsTo(AdminUser::class);
+        return $this->belongsTo(AdminUser::class, 'user_id');
     }
 
     public function article(): BelongsTo

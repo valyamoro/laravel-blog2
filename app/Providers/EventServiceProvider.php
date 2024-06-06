@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\AdminUserChangedPasswordEvent;
 use App\Events\UserRegisteredEvent;
 use App\Listeners\SendRegisteredEmailListener;
+use App\Listeners\SendToAdminAboutChangedPassword;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserRegisteredEvent::class => [
             SendRegisteredEmailListener::class,
+        ],
+        AdminUserChangedPasswordEvent::class => [
+            SendToAdminAboutChangedPassword::class,
         ],
     ];
 

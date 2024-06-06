@@ -3,7 +3,6 @@
 namespace App\Services\Tags;
 
 use App\Http\Requests\TagRequest;
-use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -13,7 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 final class TagRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = Tag::query();
 
@@ -35,7 +37,10 @@ final class TagRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -57,7 +62,10 @@ final class TagRepository
         return $result ?? null;
     }
 
-    public function update(TagRequest $request, Tag $tag): ?Tag
+    public function update(
+        Request $request,
+        Tag $tag,
+    ): ?Tag
     {
         $result = $tag->update($request->only($tag->getFillable()));
 

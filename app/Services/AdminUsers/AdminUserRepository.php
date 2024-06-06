@@ -2,7 +2,6 @@
 
 namespace App\Services\AdminUsers;
 
-use App\Http\Requests\AdminUserRequest;
 use App\Models\AdminUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -11,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 final class AdminUserRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = AdminUser::query();
 
@@ -33,7 +35,10 @@ final class AdminUserRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -50,7 +55,10 @@ final class AdminUserRepository
         return $result ?? null;
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): ?AdminUser
+    public function update(
+        Request $request,
+        AdminUser $adminUser,
+    ): ?AdminUser
     {
         $result = $adminUser->update($request->only($adminUser->getFillable()));
 

@@ -12,7 +12,10 @@ final class TagService
 {
     public function __construct(private readonly TagRepository $tagRepository) {}
 
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         return $this->tagRepository->getAllWithPagination($request, $perPage);
     }
@@ -29,7 +32,10 @@ final class TagService
         return $this->tagRepository->create($request);
     }
 
-    public function update(TagRequest $request, Tag $tag): ?Tag
+    public function update(
+        Request $request,
+        Tag $tag,
+    ): ?Tag
     {
         $request->merge(['is_active' => (bool)$request->input('is_active')]);
 

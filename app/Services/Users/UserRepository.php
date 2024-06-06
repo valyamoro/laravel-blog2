@@ -2,7 +2,6 @@
 
 namespace App\Services\Users;
 
-use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -11,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 final class UserRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = User::query();
 
@@ -33,7 +35,10 @@ final class UserRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -50,7 +55,10 @@ final class UserRepository
         return $result ?? null;
     }
 
-    public function update(UserRequest $request, User $user): ?User
+    public function update(
+        Request $request,
+        User $user,
+    ): ?User
     {
         $result = $user->update($request->only($user->getFillable()));
 

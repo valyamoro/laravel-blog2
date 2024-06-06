@@ -4,6 +4,7 @@ namespace Admin\AdminUser;
 
 use App\Models\AdminUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AdminUserRequestTest extends TestCase
@@ -17,7 +18,7 @@ class AdminUserRequestTest extends TestCase
         $this->actingAs(AdminUser::factory()->create(), 'admin');
     }
 
-    public function testInvalidUsername(): void
+    public function testInvalidAdminUsername(): void
     {
         $invalidRequestData = [
             'username' => '#!#@!#@11',
@@ -30,11 +31,9 @@ class AdminUserRequestTest extends TestCase
             'username' => 'Значение поля имя имеет некорректный формат.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -59,11 +58,9 @@ class AdminUserRequestTest extends TestCase
             'email' => 'Такое значение поля почты уже существует.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(AdminUser::class, 2);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -82,11 +79,9 @@ class AdminUserRequestTest extends TestCase
             'email' => 'Значение поля почты должно быть действительным электронным адресом.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -105,11 +100,9 @@ class AdminUserRequestTest extends TestCase
             'password' => 'Значение поля пароль имеет некорректный формат.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -128,11 +121,9 @@ class AdminUserRequestTest extends TestCase
             'password' => 'Значение поля пароль не совпадает с подтверждаемым.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -152,11 +143,9 @@ class AdminUserRequestTest extends TestCase
             'password' => 'Количество символов в поле пароль должно быть не меньше 5.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -164,15 +153,11 @@ class AdminUserRequestTest extends TestCase
 
     public function testMoreThanFields(): void
     {
-        $longString = str_repeat('n', 256);
-        $longStringUsername = $longString;
-        $longStringEmail = $longString . '@example.com';
-        $longStringPassword = $longString;
         $invalidRequestData = [
-            'username' => $longStringUsername,
-            'email' => $longStringEmail,
-            'password' => $longStringPassword,
-            'password_confirmation' => $longStringPassword,
+            'username' => Str::repeat('n', 256),
+            'email' => Str::repeat('n', 256) . '@gmail.com',
+            'password' => Str::repeat('n', 256),
+            'password_confirmation' => Str::repeat('n', 256),
             'is_banned' => '0',
         ];
         $fieldErrorMessages = [
@@ -181,11 +166,9 @@ class AdminUserRequestTest extends TestCase
             'password' => 'Количество символов в значении поля пароль не может превышать 255.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -206,11 +189,9 @@ class AdminUserRequestTest extends TestCase
             'password' => 'Поле пароль обязательно.',
         ];
 
-        $response = $this->post(route('admin-users.store', $invalidRequestData));
+        $this->post(route('admin-users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
-        $this->assertDatabaseCount(AdminUser::class, 1);
         $this->assertFalse(session()->hasOldInput('password'));
     }
 

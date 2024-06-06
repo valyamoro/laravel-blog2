@@ -41,14 +41,12 @@ class AdminUserController extends BaseController
         $result = $this->adminUserService->create($request);
 
         if (!$result) {
-            $errorSave = config('messages.error.save');
-            return back()->withErrors(['error' => $errorSave]);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
         event(new UserRegisteredEvent(new AdminUser($request->input())));
 
-        $successSave = config('messages.success.save');
-        return redirect()->route('admin-users.index')->with('success', $successSave);
+        return redirect()->route('admin-users.index')->with('success',trans('messages.success.save'));
     }
 
     public function show(AdminUser $adminUser): View
@@ -71,17 +69,18 @@ class AdminUserController extends BaseController
         ]);
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): RedirectResponse
+    public function update(
+        AdminUserRequest $request,
+        AdminUser $adminUser,
+    ): RedirectResponse
     {
         $result = $this->adminUserService->update($request, $adminUser);
 
         if (!$result) {
-            $errorSave = config('messages.error.save');
-            return back()->withErrors(['error' => $errorSave]);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        $successSave = config('messages.success.save');
-        return redirect()->route('admin-users.index')->with('success', $successSave);
+        return redirect()->route('admin-users.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(AdminUser $adminUser): RedirectResponse
@@ -89,12 +88,10 @@ class AdminUserController extends BaseController
         $result = $this->adminUserService->destroy($adminUser);
 
         if (!$result) {
-            $errorDestroy = config('messages.error.destroy');
-            return back()->withErrors(['error' => $errorDestroy]);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        $successDestroy = config('messages.success.destroy');
-        return redirect()->route('admin-users.index')->with('success', $successDestroy);
+        return redirect()->route('admin-users.index')->with('success', trans('messages.success.destroy'));
     }
 
 }

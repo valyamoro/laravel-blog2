@@ -2,6 +2,7 @@
 
 namespace App\Services\AdminUsers;
 
+use App\Events\AdminUserChangedPasswordEvent;
 use App\Http\Requests\AdminUserRequest;
 use App\Models\AdminUser;
 use Illuminate\Http\Request;
@@ -23,8 +24,12 @@ final class AdminUserService
         return $this->adminUserRepository->create($request);
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): ?AdminUser
+    public function update(Request $request, AdminUser $adminUser): ?AdminUser
     {
+        if ($request->filled('password')) {
+            event(new AdminUserChangedPasswordEvent($adminUser, $request->input('password')));
+        }
+
         $request->merge(['is_banned' => (bool)$request->input('is_banned')]);
         $request->merge(['password' => $request->filled('password') ? $request->input('password') : $adminUser->password]);
 

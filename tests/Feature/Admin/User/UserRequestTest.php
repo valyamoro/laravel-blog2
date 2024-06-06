@@ -31,11 +31,9 @@ class UserRequestTest extends TestCase
             'username' => 'Значение поля имя имеет некорректный формат.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -60,11 +58,9 @@ class UserRequestTest extends TestCase
             'email' => 'Такое значение поля почты уже существует.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(User::class, 1);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -83,11 +79,9 @@ class UserRequestTest extends TestCase
             'email' => 'Значение поля почты должно быть действительным электронным адресом.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -106,11 +100,9 @@ class UserRequestTest extends TestCase
             'password' => 'Значение поля пароль имеет некорректный формат.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -129,11 +121,9 @@ class UserRequestTest extends TestCase
             'password' => 'Значение поля пароль не совпадает с подтверждаемым.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessage);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessage);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -153,11 +143,9 @@ class UserRequestTest extends TestCase
             'password' => 'Количество символов в поле пароль должно быть не меньше 5.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -182,11 +170,9 @@ class UserRequestTest extends TestCase
             'password' => 'Количество символов в значении поля пароль не может превышать 255.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
-        $this->assertDatabaseCount(User::class, 0);
         $this->assertTrue(session()->hasOldInput('username'));
         $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(session()->hasOldInput('password'));
@@ -207,10 +193,9 @@ class UserRequestTest extends TestCase
             'password' => 'Поле пароль обязательно.',
         ];
 
-        $response = $this->post(route('users.store', $invalidRequestData));
+        $this->post(route('users.store', $invalidRequestData))
+            ->assertInvalid($fieldErrorMessages);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors($fieldErrorMessages);
         $this->assertDatabaseCount(User::class, 0);
         $this->assertFalse(session()->hasOldInput('password'));
     }

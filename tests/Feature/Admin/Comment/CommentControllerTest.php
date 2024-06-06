@@ -6,7 +6,6 @@ use App\Models\AdminUser;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
-use App\Services\AdminUsers\AdminUserRepository;
 use App\Services\Comments\CommentRepository;
 use App\Services\Comments\CommentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,19 +18,19 @@ class CommentControllerTest extends TestCase
 
     private CommentService $commentService;
     private AdminUser $adminUser;
+    private Article $article;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $commentRepository = new CommentRepository();
-        $adminUserRepository = new AdminUserRepository();
-        $this->commentService = new CommentService($commentRepository, $adminUserRepository);
+        $this->commentService = new CommentService(new CommentRepository());
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
 
-        Category::factory()->create();
         $this->adminUser = AdminUser::factory()->create();
+        Category::factory()->create();
+        $this->article = Article::factory()->create();
     }
 
     public function testGetViewCommentsIndex(): void
@@ -53,11 +52,9 @@ class CommentControllerTest extends TestCase
 
     public function testCommentCreate(): void
     {
-        $article = Article::factory()->create(['id' => 1]);
         $commentData = [
             'comment' => 'test comment data',
-            'article_id' => $article->id,
-            'admin_user_id' => auth('admin')->id(),
+            'article_id' => $this->article->id,
         ];
 
         $response = $this->post(route('comments.store'), $commentData);
@@ -69,14 +66,12 @@ class CommentControllerTest extends TestCase
 
     public function testGetViewCommentsShow(): void
     {
-        $article = Article::factory()->create(['id' => 1]);
-        $commentData = [
+        $comment = Comment::factory()->create([
             'id' => 1,
             'comment' => 'Test data comment',
-            'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
-        ];
-        $comment = Comment::factory()->create($commentData);
+            'article_id' => $this->article->id,
+            'user_id' => $this->adminUser->id,
+        ]);
         $title = 'Комментарий: #1';
 
         $response = $this->get(route('comments.show', $comment));
@@ -91,36 +86,37 @@ class CommentControllerTest extends TestCase
 
     public function testCommentUpdate(): void
     {
-        $article = Article::factory()->create(['id' => 1]);
-        $commentData = [
-            'comment' => 'Test data comment',
-            'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
+        $requestData = [
+            'comment' => 'Changed test data comment',
+            'article_id' => $this->article->id,
+            'user_id' => $this->adminUser->id,
         ];
-        $comment = Comment::factory()->create($commentData);
+        $comment = Comment::factory()->create([
+            'comment' => 'Test data comment',
+            'article_id' => $this->article->id,
+            'user_id' => $this->adminUser->id,
+        ]);
 
-        $response = $this->put(route('comments.update', $comment), $commentData);
+        $response = $this->put(route('comments.update', $comment), $requestData);
 
         $this->assertDatabaseCount(Comment::class, 1);
-        $this->assertDatabaseHas(Comment::class, $commentData);
+        $this->assertDatabaseHas(Comment::class, $requestData);
         $response->assertSessionHas('success', 'Успешно сохранено.');
         $response->assertRedirect(route('comments.index'));
     }
 
     public function testCommentDestroy(): void
     {
-        $article = Article::factory()->create(['id' => 1]);
-        $commentData = [
+        $comment = Comment::factory()->create([
             'comment' => 'Test data comment',
-            'article_id' => $article->id,
-            'admin_user_id' => $this->adminUser->id,
-        ];
-        $comment = Comment::factory()->create($commentData);
+            'article_id' => $this->article->id,
+            'user_id' => $this->adminUser->id,
+        ]);
 
         $response = $this->delete(route('comments.destroy', $comment));
 
         $this->assertDatabaseCount(Comment::class, 0);
-        $this->assertDatabaseMissing(Comment::class, $commentData);
+        $this->assertDatabaseMissing(Comment::class, $comment->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('comments.index'));
     }

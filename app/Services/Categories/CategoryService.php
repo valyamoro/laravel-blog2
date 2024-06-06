@@ -2,23 +2,17 @@
 
 namespace App\Services\Categories;
 
-use App\Enums\CategoryFile;
 use App\Models\Category;
 use App\Traits\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class CategoryService
 {
     use FileUploader;
 
-    public function __construct(
-        private readonly CategoryRepository $categoryRepository,
-    )
-    {
-    }
+    public function __construct(private readonly CategoryRepository $categoryRepository) {}
 
     public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
@@ -41,7 +35,10 @@ final class CategoryService
         return $this->categoryRepository->create($request);
     }
 
-    public function update(Request $request, Category $category): ?Category
+    public function update(
+        Request $request,
+        Category $category,
+    ): ?Category
     {
         if ($request->hasFile('thumbnail') && !empty($category->thumbnail)) {
             $result = $this->deleteImage($category, 'public', 'thumbnail');

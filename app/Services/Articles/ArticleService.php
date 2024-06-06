@@ -3,21 +3,15 @@
 namespace App\Services\Articles;
 
 use App\Models\Article;
-use App\Services\Categories\CategoryRepository;
 use App\Traits\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 final class ArticleService
 {
     use FileUploader;
 
-    public function __construct(
-        private readonly ArticleRepository $articleRepository,
-    )
-    {
-    }
+    public function __construct(private readonly ArticleRepository $articleRepository) {}
 
     public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
     {
@@ -36,7 +30,10 @@ final class ArticleService
         return $this->articleRepository->create($request);
     }
 
-    public function update(Request $request, Article $article): ?Article
+    public function update(
+        Request $request,
+        Article $article,
+    ): ?Article
     {
         if ($request->hasFile('thumbnail') && !empty($article->thumbnail)) {
             $result = $this->deleteImage($article, 'public', 'thumbnail');

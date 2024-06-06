@@ -24,7 +24,6 @@ class CategoryRequestTest extends TestCase
     public function testInvalidName(): void
     {
         $invalidRequestData = [
-            'parent_id' => 1,
             'name' => '$#$#',
         ];
         $fieldErrorMessage = [
@@ -44,7 +43,6 @@ class CategoryRequestTest extends TestCase
             'is_active' => true,
         ]);
         $invalidRequestData = [
-            'parent_id' => 1,
             'name' => 'test',
         ];
         $fieldErrorMessage = [
@@ -59,11 +57,10 @@ class CategoryRequestTest extends TestCase
 
     public function testThumbnailValidateWithIncorrectFormat(): void
     {
-        $file = UploadedFile::fake()->image('file.qwddqw', 150, 150);
         $invalidRequestData = [
             'parent_id' => 1,
             'name' => 'test',
-            'thumbnail' => $file,
+            'thumbnail' => UploadedFile::fake()->image('file.qwddqw', 150, 150),
         ];
         $fieldErrorMessage = [
             'thumbnail' => [

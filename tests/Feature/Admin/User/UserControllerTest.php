@@ -27,9 +27,9 @@ class UserControllerTest extends TestCase
 
     public function testGetViewUsersIndex(): void
     {
-        $title = 'Пользователи';
-        $perPage = 5;
         $request = new Request();
+        $perPage = 5;
+        $title = 'Пользователи';
 
         $response = $this->get(route('users.index'));
         $users = $this->userService->getAllWithPagination($request, $perPage);
@@ -57,16 +57,16 @@ class UserControllerTest extends TestCase
 
     public function testUserCreate(): void
     {
-        $userData = [
-            'username' => 'Test',
-            'email' => 'test@example.com',
-            'is_banned' => false,
-        ];
         $requestData = [
             'username' => 'Test',
             'email' => 'test@example.com',
             'password' => '123456j',
             'password_confirmation' => '123456j',
+            'is_banned' => false,
+        ];
+        $userData = [
+            'username' => 'Test',
+            'email' => 'test@example.com',
             'is_banned' => false,
         ];
 
@@ -80,13 +80,13 @@ class UserControllerTest extends TestCase
 
     public function testGetViewUsersShow(): void
     {
+        $title = 'Профиль пользователя: Test';
         $user = User::factory()->create([
             'username' => 'Test',
             'email' => 'test@gmail.com',
             'password' => bcrypt('123456j'),
             'is_banned' => true,
         ]);
-        $title = 'Профиль пользователя: Test';
 
         $response = $this->get(route('users.show', $user));
 
@@ -100,14 +100,13 @@ class UserControllerTest extends TestCase
 
     public function testGetViewUsersEdit(): void
     {
-        $userData = [
+        $title = 'Редактировать: Test';
+        $user = User::factory()->create([
             'username' => 'Test',
             'email' => 'test@gmail.com',
             'password' => '123456j',
             'is_banned' => true,
-        ];
-        $user = User::factory()->create($userData);
-        $title = 'Редактировать: Test';
+        ]);
 
         $response = $this->get(route('users.edit', $user));
 
@@ -121,18 +120,17 @@ class UserControllerTest extends TestCase
 
     public function testUserUpdate(): void
     {
+        $user = User::factory()->create([
+            'username' => 'Test',
+            'email' => 'test@example.com',
+            'password' => bcrypt('123456j'),
+            'is_banned' => false,
+        ]);
         $requestData = [
             'username' => 'Test2',
             'email' => 'test@example2.com',
             'is_banned' => false,
         ];
-        $userData = [
-            'username' => 'Test',
-            'email' => 'test@example.com',
-            'password' => bcrypt('123456j'),
-            'is_banned' => false,
-        ];
-        $user = User::factory()->create($userData);
 
         $response = $this->put(route('users.update', $user), $requestData);
 
@@ -144,18 +142,17 @@ class UserControllerTest extends TestCase
 
     public function testUserDestroy(): void
     {
-        $userData = [
+        $user = User::factory()->create([
             'username' => 'Test',
             'email' => 'test@example.com',
             'password' => bcrypt('123456j'),
             'is_banned' => true,
-        ];
-        $user = User::factory()->create($userData);
+        ]);
 
         $response = $this->delete(route('users.destroy', $user));
 
         $this->assertDatabaseCount(User::class, 0);
-        $this->assertDatabaseMissing(User::class, $userData);
+        $this->assertDatabaseMissing(User::class, $user->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('users.index'));
     }

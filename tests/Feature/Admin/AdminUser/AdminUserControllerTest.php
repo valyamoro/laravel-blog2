@@ -19,8 +19,7 @@ class AdminUserControllerTest extends TestCase
     {
         parent::setUp();
 
-        $adminUserRepository = new AdminUserRepository();
-        $this->adminUserService = new AdminUserService($adminUserRepository);
+        $this->adminUserService = new AdminUserService(new AdminUserRepository());
 
         $this->actingAs(AdminUser::factory()->create(), 'admin');
     }
@@ -28,8 +27,8 @@ class AdminUserControllerTest extends TestCase
     public function testGetViewAdminUsersIndex(): void
     {
         $title = 'Администраторы';
-        $perPage = 5;
         $request = new Request();
+        $perPage = 5;
 
         $response = $this->get(route('admin-users.index'));
         $adminUsers = $this->adminUserService->getAllWithPagination($request, $perPage);
@@ -55,18 +54,18 @@ class AdminUserControllerTest extends TestCase
         ]);
     }
 
-    public function testUserCreate(): void
+    public function testAdminUserCreate(): void
     {
-        $adminUserData = [
-            'username' => 'Test',
-            'email' => 'test@example.com',
-            'is_banned' => false,
-        ];
         $requestData = [
             'username' => 'Test',
             'email' => 'test@example.com',
             'password' => '123456j',
             'password_confirmation' => '123456j',
+            'is_banned' => false,
+        ];
+        $adminUserData = [
+            'username' => 'Test',
+            'email' => 'test@example.com',
             'is_banned' => false,
         ];
 
@@ -100,14 +99,13 @@ class AdminUserControllerTest extends TestCase
 
     public function testGetViewAdminUsersEdit(): void
     {
-        $adminUserData = [
+        $title = 'Редактировать: Test';
+        $adminUser = AdminUser::factory()->create([
             'username' => 'Test',
             'email' => 'test@gmail.com',
             'password' => '123456j',
             'is_banned' => true,
-        ];
-        $adminUser = AdminUser::factory()->create($adminUserData);
-        $title = 'Редактировать: Test';
+        ]);
 
         $response = $this->get(route('admin-users.edit', $adminUser));
 
@@ -119,20 +117,19 @@ class AdminUserControllerTest extends TestCase
         ]);
     }
 
-    public function testUserUpdate(): void
+    public function testAdminUserUpdate(): void
     {
-        $requestData = [
-            'username' => 'Test2',
-            'email' => 'test@example2.com',
-            'is_banned' => false,
-        ];
-        $adminUserData = [
+        $adminUser = AdminUser::factory()->create([
             'username' => 'Test',
             'email' => 'test@example.com',
             'password' => bcrypt('123456j'),
             'is_banned' => false,
+        ]);
+        $requestData = [
+            'username' => 'Test2',
+            'email' => 'test@example2.com',
+            'is_banned' => true,
         ];
-        $adminUser = AdminUser::factory()->create($adminUserData);
 
         $response = $this->put(route('admin-users.update', $adminUser), $requestData);
 
@@ -142,20 +139,19 @@ class AdminUserControllerTest extends TestCase
         $response->assertRedirect(route('admin-users.index'));
     }
 
-    public function testUserDestroy(): void
+    public function testAdminUserDestroy(): void
     {
-        $adminUserData = [
+        $adminUser = AdminUser::factory()->create([
             'username' => 'Test',
             'email' => 'test@example.com',
             'password' => bcrypt('123456j'),
             'is_banned' => true,
-        ];
-        $adminUser = AdminUser::factory()->create($adminUserData);
+        ]);
 
         $response = $this->delete(route('admin-users.destroy', $adminUser));
 
         $this->assertDatabaseCount(AdminUser::class, 1);
-        $this->assertDatabaseMissing(AdminUser::class, $adminUserData);
+        $this->assertDatabaseMissing(AdminUser::class, $adminUser->toArray());
         $response->assertSessionHas('success', 'Успешно удалено.');
         $response->assertRedirect(route('admin-users.index'));
     }

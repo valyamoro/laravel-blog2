@@ -43,10 +43,10 @@ class CategoryController extends BaseController
         $result = $this->categoryService->create($request);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения!']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('categories.index')->with('success', trans('messages.success.save'));
     }
 
     public function show(Category $category): View
@@ -72,15 +72,18 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function update(CategoryRequest $request, Category $category): RedirectResponse
+    public function update(
+        CategoryRequest $request,
+        Category $category,
+    ): RedirectResponse
     {
         $result = $this->categoryService->update($request, $category);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка сохранения.']);
+            return back()->withErrors(['error' => trans('messages.error.save')]);
         }
 
-        return redirect()->route('categories.index')->with('success', 'Успешно сохранено.');
+        return redirect()->route('categories.index')->with('success', trans('messages.success.save'));
     }
 
     public function destroy(Category $category): RedirectResponse
@@ -88,10 +91,10 @@ class CategoryController extends BaseController
         $result = $this->categoryService->destroy($category);
 
         if (!$result) {
-            return back()->withErrors(['error' => 'Ошибка удаления.']);
+            return back()->withErrors(['error' => trans('messages.error.destroy')]);
         }
 
-        return redirect()->route('categories.index')->with('success', 'Успешно удалено.');
+        return redirect()->route('categories.index')->with('success', trans('messages.success.destroy'));
     }
 
 }
