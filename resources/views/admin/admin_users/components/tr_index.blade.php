@@ -7,7 +7,7 @@
         <div class="custom-control custom-switch">
             <input id="customSwitch_{{ $value->id }}" type="checkbox" name="is_banned" class="custom-control-input"
                    @if(isset($value) && $value->is_banned === true) checked @endif
-                   data-id="{{ $value->id }}" data-item="adminUser" data-status-name="is_banned">
+                   data-id="{{ $value->id }}" data-item="admin_users" data-status-name="is_banned">
             <label for="customSwitch_{{ $value->id }}" class="custom-control-label"></label>
         </div>
     </td>

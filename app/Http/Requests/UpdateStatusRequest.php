@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class IsBannedRequest extends FormRequest
+class UpdateStatusRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,9 +13,10 @@ class IsBannedRequest extends FormRequest
 
     public function rules(): array
     {
+        $statusName = $this->input('status_name');
+
         return [
-            'is_banned' => 'nullable' . ($this->filled('is_banned') ? '|accepted' : ''),
+            $statusName => 'nullable' . (($this->input($statusName) === true) ? '|accepted' : ''),
         ];
     }
-
 }

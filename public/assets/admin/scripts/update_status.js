@@ -11,7 +11,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateActiveStatus(id, item, statusName, statusValue) {
-        const data = statusValue ? {[statusName]: statusValue} : null;
+        let data = {}
+
+        if (statusValue) {
+            data = {
+                [statusName]: 1,
+                status_name: statusName,
+            }
+        } else {
+            data = {
+                [statusName]: 0,
+                status_name: statusName,
+            }
+        }
 
         toastr.options = {
             "positionClass": "toast-top-right",
@@ -20,8 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
             "closeButton": true
         }
 
+        console.log('/api/status/' + item + '/' + id);
         $.ajax({
-            url: '/api/' + item + '/status/' + id,
+            url: '/api/status/' + item + '/' + id,
             method: 'PATCH',
             data: data,
             success: function () {

@@ -9,7 +9,7 @@
         <div class="custom-control custom-switch">
             <input id="customSwitch_{{ $value->id }}" type="checkbox" name="is_active" class="custom-control-input"
                    @if(isset($value) && $value->is_active === true) checked @endif
-                   data-id="{{ $value->id }}" data-item="category" data-status-name="is_active">
+                   data-id="{{ $value->id }}" data-item="categories" data-status-name="is_active">
             <label for="customSwitch_{{ $value->id }}" class="custom-control-label"></label>
         </div>
     </td>
