@@ -72,7 +72,10 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function update(CategoryRequest $request, Category $category): RedirectResponse
+    public function update(
+        CategoryRequest $request,
+        Category $category,
+    ): RedirectResponse
     {
         $result = $this->categoryService->update($request, $category);
 

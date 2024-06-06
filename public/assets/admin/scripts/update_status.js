@@ -1,12 +1,12 @@
 function updateActiveStatus(id, item, statusName, statusValue) {
-    let optionsForRequestData;
+    let data;
     if (statusValue) {
-        optionsForRequestData = {
+        data = {
             [statusName]: statusValue,
             _token: '{{ csrf_token() }}'
         }
     } else {
-        optionsForRequestData = {
+        data = {
             _token: '{{ csrf_token() }}'
         }
     }
@@ -20,7 +20,7 @@ function updateActiveStatus(id, item, statusName, statusValue) {
     $.ajax({
         url: '/api/' + item + '/status/' + id,
         method: 'PATCH',
-        data: optionsForRequestData,
+        data: data,
         success: function (response) {
             toastr.success('Успешно сохранено!');
         },

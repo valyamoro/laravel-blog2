@@ -12,15 +12,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly CategoryService $categoryService,
         private readonly TagService $tagService,
-    )
-    {
-    }
+    ) {}
 
     public function index(Request $request): View
     {
@@ -87,7 +85,10 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function update(ArticleRequest $request, Article $article): RedirectResponse
+    public function update(
+        ArticleRequest $request,
+        Article $article,
+    ): RedirectResponse
     {
         $result = $this->articleService->update($request, $article);
 

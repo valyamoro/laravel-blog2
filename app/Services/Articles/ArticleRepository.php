@@ -3,16 +3,17 @@
 namespace App\Services\Articles;
 
 use App\Models\Article;
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class ArticleRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = Article::query();
 
@@ -34,7 +35,10 @@ final class ArticleRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -52,7 +56,10 @@ final class ArticleRepository
         return $result ? $result : null;
     }
 
-    public function update(Request $request, Article $article): ?Article
+    public function update(
+        Request $request,
+        Article $article,
+    ): ?Article
     {
         $result = $article->update($request->input());
         $result ? $this->createTags($request, $article) : null;
@@ -60,7 +67,10 @@ final class ArticleRepository
         return $result ? $article : null;
     }
 
-    private function createTags(Request $request, Article $article): void
+    private function createTags(
+        Request $request,
+        Article $article,
+    ): void
     {
         $article->tags()->sync($request->input('tags'));
     }

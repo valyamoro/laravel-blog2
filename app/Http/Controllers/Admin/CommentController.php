@@ -11,11 +11,7 @@ use Illuminate\View\View;
 
 class CommentController extends BaseController
 {
-    public function __construct(
-        private readonly CommentService $commentService,
-    )
-    {
-    }
+    public function __construct(private readonly CommentService $commentService) {}
 
     public function index(Request $request): View
     {

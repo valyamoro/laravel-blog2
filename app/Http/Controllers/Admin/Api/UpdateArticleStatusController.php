@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Requests\IsActiveRequest;
 use App\Models\Article;
-use App\Models\Comment;
 use App\Services\Articles\ArticleService;
-use App\Services\Comments\CommentService;
 use Illuminate\Http\JsonResponse;
 
 class UpdateArticleStatusController extends BaseController
 {
     public function __construct(private readonly ArticleService $articleService) {}
 
-    public function __invoke(IsActiveRequest $request, Article $article): JsonResponse
+    public function __invoke(
+        IsActiveRequest $request,
+        Article $article,
+    ): JsonResponse
     {
         $result = $this->articleService->update($request, $article);
 

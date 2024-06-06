@@ -11,7 +11,6 @@ class UserRegisteredEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public Model $user)
-    {
-    }
+    public function __construct(public Model $user) {}
+
 }

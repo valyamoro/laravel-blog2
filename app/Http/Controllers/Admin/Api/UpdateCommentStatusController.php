@@ -11,7 +11,10 @@ class UpdateCommentStatusController extends BaseController
 {
     public function __construct(private readonly CommentService $commentService) {}
 
-    public function __invoke(IsActiveRequest $request, Comment $comment): JsonResponse
+    public function __invoke(
+        IsActiveRequest $request,
+        Comment $comment,
+    ): JsonResponse
     {
         $result = $this->commentService->update($request, $comment);
 

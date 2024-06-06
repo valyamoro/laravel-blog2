@@ -2,7 +2,6 @@
 
 namespace App\Services\Categories;
 
-use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -12,7 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 final class CategoryRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = Category::query();
 
@@ -34,7 +36,10 @@ final class CategoryRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -56,7 +61,10 @@ final class CategoryRepository
         return $result ? $result : null;
     }
 
-    public function update(Request $request, Category $category): ?Category
+    public function update(
+        Request $request,
+        Category $category,
+    ): ?Category
     {
         $result = $category->update($request->input());
 

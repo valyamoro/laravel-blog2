@@ -11,7 +11,10 @@ final class UserService
 {
     public function __construct(private readonly UserRepository $userRepository) {}
 
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         return $this->userRepository->getAllWithPagination($request, $perPage);
     }
@@ -23,7 +26,10 @@ final class UserService
         return $this->userRepository->create($request);
     }
 
-    public function update(Request $request, User $user): ?User
+    public function update(
+        Request $request,
+        User $user,
+    ): ?User
     {
         $request->merge(['is_banned' => (bool)$request->input('is_banned')]);
         $request->merge(['password' => $request->filled('password') ? $request->input('password') : $user->password]);

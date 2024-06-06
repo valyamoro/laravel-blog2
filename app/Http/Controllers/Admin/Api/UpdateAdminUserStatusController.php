@@ -11,7 +11,10 @@ class UpdateAdminUserStatusController extends BaseController
 {
     public function __construct(private readonly AdminUserService $adminUserService) {}
 
-    public function __invoke(IsBannedRequest $request, AdminUser $adminUser): JsonResponse
+    public function __invoke(
+        IsBannedRequest $request,
+        AdminUser $adminUser,
+    ): JsonResponse
     {
         $result = $this->adminUserService->update($request, $adminUser);
 

@@ -69,7 +69,10 @@ class AdminUserController extends BaseController
         ]);
     }
 
-    public function update(AdminUserRequest $request, AdminUser $adminUser): RedirectResponse
+    public function update(
+        AdminUserRequest $request,
+        AdminUser $adminUser,
+    ): RedirectResponse
     {
         $result = $this->adminUserService->update($request, $adminUser);
 

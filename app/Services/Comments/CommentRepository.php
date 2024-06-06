@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 final class CommentRepository
 {
-    public function getAllWithPagination(Request $request, int $perPage): LengthAwarePaginator
+    public function getAllWithPagination(
+        Request $request,
+        int $perPage,
+    ): LengthAwarePaginator
     {
         $builder = Comment::query();
 
@@ -33,7 +36,10 @@ final class CommentRepository
             ->withQueryString();
     }
 
-    private function search(Request $request, Builder $builder): Builder
+    private function search(
+        Request $request,
+        Builder $builder,
+    ): Builder
     {
         if ($request->filled('q') && !empty($request->input('q'))) {
             $like = mb_strtolower('%' . $request->input('q') . '%');
@@ -50,7 +56,10 @@ final class CommentRepository
         return $result ?? null;
     }
 
-    public function update(Request $request, Comment $comment): ?Comment
+    public function update(
+        Request $request,
+        Comment $comment,
+    ): ?Comment
     {
         $result = $comment->update($request->only($comment->getFillable()));
 

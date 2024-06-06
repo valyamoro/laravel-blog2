@@ -62,7 +62,10 @@ class TagController extends Controller
         ]);
     }
 
-    public function update(TagRequest $request, Tag $tag): RedirectResponse
+    public function update(
+        TagRequest $request,
+        Tag $tag,
+    ): RedirectResponse
     {
         $result = $this->tagService->update($request, $tag);
 

@@ -52,7 +52,10 @@ class UserController extends BaseController
         return redirect()->route('users.index')->with('success', trans('messages.success.save'));
     }
 
-    public function show(Request $request, User $user): View
+    public function show(
+        Request $request,
+        User $user,
+    ): View
     {
         $title = 'Профиль пользователя: ' . $user->username;
 
@@ -75,7 +78,10 @@ class UserController extends BaseController
         ]);
     }
 
-    public function update(UserRequest $request, User $user): RedirectResponse
+    public function update(
+        UserRequest $request,
+        User $user,
+    ): RedirectResponse
     {
         $result = $this->userService->update($request, $user);
 

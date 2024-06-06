@@ -11,7 +11,10 @@ class UpdateUserStatusController extends BaseController
 {
     public function __construct(private readonly UserService $userService) {}
 
-    public function __invoke(IsBannedRequest $request, User $user): JsonResponse
+    public function __invoke(
+        IsBannedRequest $request,
+        User $user,
+    ): JsonResponse
     {
         $result = $this->userService->update($request, $user);
 

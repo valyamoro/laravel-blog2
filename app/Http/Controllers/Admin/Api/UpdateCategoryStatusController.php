@@ -13,7 +13,10 @@ class UpdateCategoryStatusController extends BaseController
 {
     public function __construct(private readonly CategoryService $categoryService) {}
 
-    public function __invoke(IsActiveRequest $request, Category $category): JsonResponse
+    public function __invoke(
+        IsActiveRequest $request,
+        Category $category,
+    ): JsonResponse
     {
         $result = $this->categoryService->update($request, $category);
 

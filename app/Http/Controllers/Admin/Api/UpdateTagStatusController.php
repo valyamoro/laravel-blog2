@@ -13,7 +13,10 @@ class UpdateTagStatusController extends BaseController
 {
     public function __construct(private readonly TagService $tagService) {}
 
-    public function __invoke(IsActiveRequest $request, Tag $tag): JsonResponse
+    public function __invoke(
+        IsActiveRequest $request,
+        Tag $tag,
+    ): JsonResponse
     {
         $result = $this->tagService->update($request, $tag);
 

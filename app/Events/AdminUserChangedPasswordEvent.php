@@ -13,9 +13,7 @@ class AdminUserChangedPasswordEvent
 
     public function __construct(
         public AdminUser $adminUser,
-        public string    $newPassword,
-    )
-    {
-    }
+        public string $newPassword,
+    ) {}
 
 }
