@@ -26,8 +26,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title"><a href="{{ route('admin-users.create') }}" type="button"
-                                               class="btn btn-block btn-primary">Добавить</a></div>
+                    <div class="card-title"><a href="{{ route('admin-users.create') }}" type="button" class="btn btn-block btn-primary">Добавить</a></div>
                     <div class="card-tools">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -40,6 +39,13 @@
                             </div>
                         @endif
                         <div class="input-group align-items-center">
+                            <div style="margin-right: 20px">
+                                <select id="pagination" name="pagination" class="custom-select">
+                                    @foreach($perPages as $idx => $name)
+                                        <option value="{{ $idx }}" @if(request('pagination') === $idx) selected @endif>{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             @if(isset($errors))
                                 @error('q')
                                 <span class="text-red">{{ $message }}</span>
@@ -99,4 +105,6 @@
         </div>
     </div>
     <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_pagination.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/redirect_to_prev_page.js') }}"></script>
 @endsection

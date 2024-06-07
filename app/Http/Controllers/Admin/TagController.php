@@ -18,12 +18,13 @@ class TagController extends Controller
     {
         $title = 'Тэги';
 
-        $perPage = config('pagination.pagination_5');
-        $tags = $this->tagService->getAllWithPagination($request, $perPage);
+        $perPages = config('pagination');
+        $tags = $this->tagService->getAllWithPagination($request, $perPages[$request->input('pagination') ?? 'pagination_20']);
 
         return view('admin.tags.index', [
             'title' => $title,
             'paginator' => $tags,
+            'perPages' => $perPages,
         ]);
     }
 

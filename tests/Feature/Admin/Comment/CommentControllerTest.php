@@ -35,7 +35,7 @@ class CommentControllerTest extends TestCase
 
     public function testGetViewCommentsIndex(): void
     {
-        $perPage = 5;
+        $perPage = 20;
         $title = 'Комментарии';
         $request = new Request();
 

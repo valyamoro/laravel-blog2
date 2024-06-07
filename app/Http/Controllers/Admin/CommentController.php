@@ -17,12 +17,13 @@ class CommentController extends BaseController
     {
         $title = 'Комментарии';
 
-        $perPage = config('pagination.pagination_5');
-        $comments = $this->commentService->getAllWithPagination($request, $perPage);
+        $perPages = config('pagination');
+        $comments = $this->commentService->getAllWithPagination($request, $perPages[$request->input('pagination') ?? 'pagination_20']);
 
         return view('admin.comments.index', [
             'title' => $title,
             'paginator' => $comments,
+            'perPages' => $perPages,
         ]);
     }
 

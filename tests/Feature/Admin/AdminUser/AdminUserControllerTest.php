@@ -28,7 +28,7 @@ class AdminUserControllerTest extends TestCase
     {
         $title = 'Администраторы';
         $request = new Request();
-        $perPage = 5;
+        $perPage = 20;
 
         $response = $this->get(route('admin-users.index'));
         $adminUsers = $this->adminUserService->getAllWithPagination($request, $perPage);

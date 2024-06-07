@@ -28,7 +28,7 @@ class UserControllerTest extends TestCase
     public function testGetViewUsersIndex(): void
     {
         $request = new Request();
-        $perPage = 5;
+        $perPage = 20;
         $title = 'Пользователи';
 
         $response = $this->get(route('users.index'));

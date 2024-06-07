@@ -34,6 +34,13 @@
                             </div>
                         @endif
                         <div class="input-group align-items-center">
+                            <div style="margin-right: 20px">
+                                <select id="pagination" name="pagination" class="custom-select">
+                                    @foreach($perPages as $idx => $name)
+                                        <option value="{{ $idx }}" @if(request('pagination') === $idx) selected @endif>{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             @if(isset($errors))
                                 @error('q')
                                 <span class="text-red">{{ $message }}</span>
@@ -93,4 +100,6 @@
         </div>
     </div>
     <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_pagination.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/redirect_to_prev_page.js') }}"></script>
 @endsection

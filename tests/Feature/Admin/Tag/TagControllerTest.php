@@ -28,7 +28,7 @@ class TagControllerTest extends TestCase
     public function testGetViewTagsIndex(): void
     {
         $request = new Request();
-        $perPage = 5;
+        $perPage = 20;
         $title = 'Тэги';
 
         $response = $this->get(route('tags.index'));

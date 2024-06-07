@@ -24,12 +24,13 @@ class ArticleController extends BaseController
     {
         $title = 'Статьи';
 
-        $perPage = config('pagination.pagination_5');
-        $categories = $this->articleService->getAllWithPagination($request, $perPage);
+        $perPages = config('pagination');
+        $categories = $this->articleService->getAllWithPagination($request, $perPages[$request->input('pagination') ?? 'pagination_20']);
 
         return view('admin.articles.index', [
             'title' => $title,
             'paginator' => $categories,
+            'perPages' => $perPages,
         ]);
     }
 

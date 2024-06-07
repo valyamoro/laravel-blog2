@@ -28,7 +28,7 @@ class CategoryControllerTest extends TestCase
     public function testGetViewCategoryIndex(): void
     {
         $request = new Request();
-        $perPage = 5;
+        $perPage = 20;
         $title = 'Категории';
 
         $response = $this->get(route('categories.index'));
