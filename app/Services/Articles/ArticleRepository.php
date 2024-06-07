@@ -15,6 +15,7 @@ final class ArticleRepository
         int $perPage,
     ): LengthAwarePaginator
     {
+        $order = $request->input('order') ?? 'desc';
         $builder = Article::query();
 
         $builderSearch = clone $builder;
@@ -24,13 +25,13 @@ final class ArticleRepository
             $request->merge(['is_exists' => false]);
 
             return $builder
-                ->orderByDesc('id')
+                ->orderBy('id', $order)
                 ->paginate($perPage)
                 ->withQueryString();
         }
 
         return $builderSearch
-            ->orderByDesc('id')
+            ->orderBy('id', $order)
             ->paginate($perPage)
             ->withQueryString();
     }

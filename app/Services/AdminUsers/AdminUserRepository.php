@@ -15,6 +15,7 @@ final class AdminUserRepository
         int $perPage,
     ): LengthAwarePaginator
     {
+        $order = $request->input('order') ?? 'desc';
         $builder = AdminUser::query();
 
         $builderSearch = clone $builder;
@@ -24,13 +25,13 @@ final class AdminUserRepository
             $request->merge(['is_exists' => false]);
 
             return $builder
-                ->orderByDesc('id')
+                ->orderBy('id', $order)
                 ->paginate($perPage)
                 ->withQueryString();
         }
 
         return $builderSearch
-            ->orderByDesc('id')
+            ->orderBy('id', $order)
             ->paginate($perPage)
             ->withQueryString();
     }

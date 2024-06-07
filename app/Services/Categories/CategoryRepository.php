@@ -16,6 +16,7 @@ final class CategoryRepository
         int $perPage,
     ): LengthAwarePaginator
     {
+        $order = $request->input('order') ?? 'desc';
         $builder = Category::query();
 
         $builderSearch = clone $builder;
@@ -25,13 +26,13 @@ final class CategoryRepository
             $request->merge(['is_exists' => false]);
 
             return $builder
-                ->orderByDesc('id')
+                ->orderBy('id', $order)
                 ->paginate($perPage)
                 ->withQueryString();
         }
 
         return $builderSearch
-            ->orderByDesc('id')
+            ->orderBy('id', $order)
             ->paginate($perPage)
             ->withQueryString();
     }
