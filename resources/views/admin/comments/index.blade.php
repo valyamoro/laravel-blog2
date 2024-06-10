@@ -35,7 +35,7 @@
                                 <span class="text-red">{{ $message }}</span>
                                 @enderror
                             @endif
-                            @if(request('q'))
+                            @if(request()->has('q'))
                                 <a href="{{ route('comments.index') }}" class="btn btn-navbar input-group-prepend">
                                     <i class="fas fa-times"></i>
                                 </a>
