@@ -18,7 +18,7 @@ class CategoryController extends BaseController
         $title = 'Категории';
 
         $paginationValues = config('pagination');
-        $categories = $this->categoryService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? 'pagination_20']);
+        $categories = $this->categoryService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.categories.index', [
             'title' => $title,

@@ -25,7 +25,7 @@ class ArticleController extends BaseController
         $title = 'Статьи';
 
         $paginationValues = config('pagination');
-        $categories = $this->articleService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? 'pagination_20']);
+        $categories = $this->articleService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.articles.index', [
             'title' => $title,

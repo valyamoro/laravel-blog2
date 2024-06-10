@@ -18,7 +18,7 @@ class CommentController extends BaseController
         $title = 'Комментарии';
 
         $paginationValues = config('pagination');
-        $comments = $this->commentService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? 'pagination_20']);
+        $comments = $this->commentService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.comments.index', [
             'title' => $title,

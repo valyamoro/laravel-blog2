@@ -24,7 +24,7 @@ class UserController extends BaseController
         $title = 'Пользователи';
 
         $paginationValues = config('pagination');
-        $users = $this->userService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? 'pagination_20']);
+        $users = $this->userService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.users.index', [
             'title' => $title,
