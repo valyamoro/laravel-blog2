@@ -96,6 +96,5 @@
     </div>
     <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
     <script src="{{ asset('assets/admin/scripts/select_pagination.js') }}"></script>
-    <script src="{{ asset('assets/admin/scripts/redirect_to_prev_page.js') }}"></script>
     <script src="{{ asset('assets/admin/scripts/select_order.js') }}"></script>
 @endsection
