@@ -13,38 +13,38 @@ final class CommentRepository
 {
     public function getAllWithPagination(
         Request $request,
-        int     $perPage
+        int $perPage,
     ): LengthAwarePaginator
     {
-        $order = $request->input('order') ?? 'desc';
         $currentPage = $request->input('page') ?? 1;
         $builder = Comment::query();
 
-        $paginator = $builder->orderBy('id', $order)->paginate($perPage);
+        $builderSearch = $this->search($request, Comment::query());
+
+        if ($builderSearch->count() === 0) {
+            $request->merge(['is_exists' => false]);
+
+            $paginator = $this->getPaginatorByBuilder($request, $builder, [$perPage]);
+        } else {
+            $paginator = $this->getPaginatorByBuilder($request, $builderSearch, [$perPage]);
+        }
 
         if ($paginator->count() === 0 && $currentPage > 1) {
-            return $builder->orderBy('id', $order)
-                ->paginate($perPage, ['*'], 'page', 1)
-                ->withQueryString();
+            $paginator = $this->getPaginatorByBuilder($request, $builderSearch, [$perPage, ['*'], 'page', 1]);
         }
 
-        $builderSearch = clone $builder;
-        $builderSearch = $this->search($request, $builderSearch);
+        return $paginator;
+    }
 
-        if ($request->has('q')) {
-            if ($builderSearch->count() === 0) {
-                $request->merge(['is_exists' => false]);
-
-                return $builder
-                    ->orderBy('id', $order)
-                    ->paginate($perPage)
-                    ->withQueryString();
-            }
-        }
-
-        return $builderSearch
-            ->orderBy('id', $order)
-            ->paginate($perPage)
+    private function getPaginatorByBuilder(
+        Request $request,
+        Builder $builder,
+        array $paginateOptions,
+    ): LengthAwarePaginator
+    {
+        return $builder
+            ->orderBy('id', ($request->input('order') ?? 'desc'))
+            ->paginate(...$paginateOptions)
             ->withQueryString();
     }
 
