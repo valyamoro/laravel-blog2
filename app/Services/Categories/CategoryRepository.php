@@ -3,13 +3,14 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use App\Services\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-final class CategoryRepository
+final class CategoryRepository extends BaseRepository
 {
     public function getAllWithPagination(
         Request $request,
@@ -34,18 +35,6 @@ final class CategoryRepository
         }
 
         return $paginator;
-    }
-
-    private function getPaginatorByBuilder(
-        Request $request,
-        Builder $builder,
-        array $paginateOptions,
-    ): LengthAwarePaginator
-    {
-        return $builder
-            ->orderBy('id', ($request->input('order') ?? 'desc'))
-            ->paginate(...$paginateOptions)
-            ->withQueryString();
     }
 
     private function search(
