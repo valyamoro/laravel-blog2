@@ -3,37 +3,38 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use App\Services\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-final class CategoryRepository
+final class CategoryRepository extends BaseRepository
 {
     public function getAllWithPagination(
         Request $request,
         int $perPage,
     ): LengthAwarePaginator
     {
+        $currentPage = $request->input('page') ?? 1;
         $builder = Category::query();
 
-        $builderSearch = clone $builder;
-        $builderSearch = $this->search($request, $builderSearch);
+        $builderSearch = $this->search($request, Category::query());
 
         if ($builderSearch->count() === 0) {
             $request->merge(['is_exists' => false]);
 
-            return $builder
-                ->orderByDesc('id')
-                ->paginate($perPage)
-                ->withQueryString();
+            $paginator = $this->getPaginatorByBuilder($request, $builder, [$perPage]);
+        } else {
+            $paginator = $this->getPaginatorByBuilder($request, $builderSearch, [$perPage]);
         }
 
-        return $builderSearch
-            ->orderByDesc('id')
-            ->paginate($perPage)
-            ->withQueryString();
+        if ($paginator->count() === 0 && $currentPage > 1) {
+            $paginator = $this->getPaginatorByBuilder($request, $builderSearch, [$perPage, ['*'], 'page', 1]);
+        }
+
+        return $paginator;
     }
 
     private function search(

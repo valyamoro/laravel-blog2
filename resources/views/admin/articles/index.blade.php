@@ -39,6 +39,8 @@
                             </div>
                         @endif
                         <div class="input-group align-items-center">
+                            @include('admin.components.select_pagination')
+                            @include('admin.components.select_order')
                             @if(isset($errors))
                                 @error('q')
                                 <span class="text-red">{{ $message }}</span>
@@ -99,4 +101,6 @@
         </div>
     </div>
     <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_pagination.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_order.js') }}"></script>
 @endsection

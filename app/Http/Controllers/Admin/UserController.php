@@ -23,12 +23,13 @@ class UserController extends BaseController
     {
         $title = 'Пользователи';
 
-        $perPage = config('pagination.pagination_5');
-        $users = $this->userService->getAllWithPagination($request, $perPage);
+        $paginationValues = config('pagination');
+        $users = $this->userService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.users.index', [
             'title' => $title,
             'paginator' => $users,
+            'paginationValues' => $paginationValues,
         ]);
     }
 
@@ -59,7 +60,7 @@ class UserController extends BaseController
     {
         $title = 'Профиль пользователя: ' . $user->username;
 
-        $comments = $this->commentService->getAllWithPagination($request, config('pagination.pagination_5'));
+        $comments = $this->commentService->getAllWithPagination($request, config('pagination.pagination_20'));
 
         return view('admin.users.show', [
             'title' => $title,

@@ -18,12 +18,13 @@ class AdminUserController extends BaseController
     {
         $title = 'Администраторы';
 
-        $perPage = config('pagination.pagination_5');
-        $adminUsers = $this->adminUserService->getAllWithPagination($request, $perPage);
+        $paginationValues = config('pagination');
+        $adminUsers = $this->adminUserService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.admin_users.index', [
             'title' => $title,
             'paginator' => $adminUsers,
+            'paginationValues' => $paginationValues,
         ]);
     }
 

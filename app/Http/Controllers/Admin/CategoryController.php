@@ -17,12 +17,13 @@ class CategoryController extends BaseController
     {
         $title = 'Категории';
 
-        $perPage = config('pagination.pagination_5');
-        $categories = $this->categoryService->getAllWithPagination($request, $perPage);
+        $paginationValues = config('pagination');
+        $categories = $this->categoryService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.categories.index', [
             'title' => $title,
             'paginator' => $categories,
+            'paginationValues' => $paginationValues,
         ]);
     }
 

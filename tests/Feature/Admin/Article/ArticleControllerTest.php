@@ -34,7 +34,7 @@ class ArticleControllerTest extends TestCase
     public function testGetViewArticleIndex(): void
     {
         $request = new Request();
-        $perPage = 5;
+        $perPage = 20;
         $title = 'Статьи';
 
         $response = $this->get(route('articles.index'));

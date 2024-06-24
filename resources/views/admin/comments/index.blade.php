@@ -28,12 +28,14 @@
                     <div class="card-title"><a href="{{ route('comments.create') }}" type="button" class="btn btn-block btn-primary">Добавить</a></div>
                     <div class="card-tools">
                         <div class="input-group align-items-center">
+                            @include('admin.components.select_pagination')
+                            @include('admin.components.select_order')
                             @if(isset($errors))
                                 @error('q')
                                 <span class="text-red">{{ $message }}</span>
                                 @enderror
                             @endif
-                            @if(request('q'))
+                            @if(request()->has('q'))
                                 <a href="{{ route('comments.index') }}" class="btn btn-navbar input-group-prepend">
                                     <i class="fas fa-times"></i>
                                 </a>
@@ -89,4 +91,6 @@
         </div>
     </div>
     <script src="{{ asset('assets/admin/scripts/update_status.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_pagination.js') }}"></script>
+    <script src="{{ asset('assets/admin/scripts/select_order.js') }}"></script>
 @endsection

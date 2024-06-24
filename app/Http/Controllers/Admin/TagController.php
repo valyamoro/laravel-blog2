@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use App\Services\Tags\TagService;
@@ -10,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class TagController extends Controller
+class TagController extends BaseController
 {
     public function __construct(private readonly TagService $tagService) {}
 
@@ -18,12 +17,13 @@ class TagController extends Controller
     {
         $title = 'Тэги';
 
-        $perPage = config('pagination.pagination_5');
-        $tags = $this->tagService->getAllWithPagination($request, $perPage);
+        $paginationValues = config('pagination');
+        $tags = $this->tagService->getAllWithPagination($request, $paginationValues[$request->input('pagination') ?? $this->defaultPerPage]);
 
         return view('admin.tags.index', [
             'title' => $title,
             'paginator' => $tags,
+            'paginationValues' => $paginationValues,
         ]);
     }
 
